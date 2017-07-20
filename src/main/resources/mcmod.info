@@ -1,0 +1,13 @@
+[{
+  "modid": "toxicrain",
+  "name": "ToxicRain",
+  "description": "",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://coolsquid.me",
+  "authorList": ["CoolSquid"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}]
