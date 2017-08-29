@@ -27,7 +27,7 @@ public class ToxicRain {
 
 	public static final String MODID = "toxicrain";
 	public static final String NAME = "ToxicRain";
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "1.0.1";
 	public static final String DEPENDENCIES = "required-after:forge@[14.21.1.2387,)";
 	public static final String UPDATE_JSON = "https://coolsquid.me/api/version/toxicrain.json";
 
@@ -46,6 +46,9 @@ public class ToxicRain {
 	private static int duration;
 	private static int amplifier;
 	private static boolean particles;
+
+	private static boolean isWhitelist;
+	private static int[] blacklist;
 
 	@Mod.EventHandler
 	public void onPreInit(FMLPreInitializationEvent event) {
@@ -67,6 +70,12 @@ public class ToxicRain {
 				"The amplifier of the effect. Has no effect with the standard poison effect (blame Mojang).");
 		particles = config.getBoolean("particles", "effect", true,
 				"Whether the potion should come with particles or not.");
+		isWhitelist = config.getBoolean("dimensionWhitelist", "blacklist", false,
+				"If true, 'dimensionList' operates as a whitelist instead of a blacklist.");
+		blacklist = config
+				.get("blacklist", "dimensionList", new int[0],
+						"A list of dimensions that should not have poisonous rain. Can be used as a whitelist if 'dimensionWhitelist' is true.")
+				.getIntList();
 		if (config.hasChanged()) {
 			config.save();
 		}
@@ -89,7 +98,8 @@ public class ToxicRain {
 
 	@SubscribeEvent
 	public void onPlayerTick(PlayerTickEvent event) {
-		if (event.phase == Phase.END && (!enableAntidote || !event.player.isPotionActive(antidote))) {
+		if (event.phase == Phase.END && (!enableAntidote || !event.player.isPotionActive(antidote))
+				&& isPoisonousDimension(event.player.world.provider.getDimension())) {
 			if (toxicWater && event.player.isInWater()) {
 				event.player.addPotionEffect(new PotionEffect(effect, duration, amplifier, false, particles));
 			} else {
@@ -125,5 +135,23 @@ public class ToxicRain {
 		longAntidoteType = new PotionType(new PotionEffect(antidote, longAntidoteDuration));
 		longAntidoteType.setRegistryName(new ResourceLocation(MODID, "long_antidote_type"));
 		event.getRegistry().register(longAntidoteType);
+	}
+
+	private static boolean isPoisonousDimension(int dim) {
+		if (isWhitelist) {
+			for (int i : blacklist) {
+				if (i == dim) {
+					return true;
+				}
+			}
+			return false;
+		} else {
+			for (int i : blacklist) {
+				if (i == dim) {
+					return false;
+				}
+			}
+			return true;
+		}
 	}
 }
