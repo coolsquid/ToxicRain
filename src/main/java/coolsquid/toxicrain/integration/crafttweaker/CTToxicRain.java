@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
+import stanhebben.zenscript.annotations.ZenMethod;
 import stanhebben.zenscript.annotations.ZenSetter;
 
 @ZenRegister
@@ -18,6 +19,12 @@ public interface CTToxicRain {
 
 	@ZenGetter("delay")
 	public int getDelay();
+
+	@ZenMethod
+	public void enable();
+
+	@ZenMethod
+	public void disable();
 
 	static class Impl implements CTToxicRain {
 
@@ -37,6 +44,18 @@ public interface CTToxicRain {
 		public int getDelay() {
 			EntityPlayer actualPlayer = (EntityPlayer) this.player.getInternal();
 			return actualPlayer.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).getDelay();
+		}
+
+		@Override
+		public void enable() {
+			if (this.getDelay() == -1) {
+				this.setDelay(0);
+			}
+		}
+
+		@Override
+		public void disable() {
+			this.setDelay(-1);
 		}
 	}
 }

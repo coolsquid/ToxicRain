@@ -17,7 +17,7 @@ public interface IPlayerData {
 
 	public int getDelay();
 
-	public void decrementDelay(int ticks);
+	public void decreaseDelay(int ticks);
 
 	public static class CapabilityStorage implements IStorage<IPlayerData> {
 
@@ -47,7 +47,7 @@ public interface IPlayerData {
 		}
 
 		@Override
-		public void decrementDelay(int ticks) {
+		public void decreaseDelay(int ticks) {
 			this.ticks -= ticks;
 		}
 	}

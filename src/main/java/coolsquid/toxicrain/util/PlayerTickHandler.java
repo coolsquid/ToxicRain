@@ -40,7 +40,7 @@ public class PlayerTickHandler {
 			if (cap.getDelay() == -1) {
 				return;
 			} else if (cap.getDelay() > 0) {
-				cap.decrementDelay(ConfigManager.checkTimeDivisor);
+				cap.decreaseDelay(ConfigManager.checkTimeDivisor);
 				return;
 			}
 			if (ConfigManager.enableAntidote && event.player.isPotionActive(ToxicRain.antidote)) {
