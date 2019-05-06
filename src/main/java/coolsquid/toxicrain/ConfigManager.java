@@ -1,5 +1,6 @@
 package coolsquid.toxicrain;
 
+import java.awt.Color;
 import java.io.File;
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
@@ -26,6 +27,9 @@ public class ConfigManager {
 
 	public static boolean enableCommand;
 
+	public static Color rainColor, rainDropsColor;
+	public static Color snowColor;
+
 	static void load() {
 		Configuration config = new Configuration(new File("config/ToxicRain.cfg"));
 		enableAntidote = config.getBoolean("enabled", "antidote", true, "Whether to enable the antidote potion.");
@@ -41,7 +45,7 @@ public class ConfigManager {
 		effect = config.getString("effect", "effect", "minecraft:poison",
 				"The potion effect to apply to players when exposed to rain.");
 		duration = config.getInt("duration", "effect", 200, 1, 12000,
-				"The duration of the poison effect, in ticks (1/20th seconds).");
+				"The duration of the poison effect, in ticks (1/20th second).");
 		amplifier = config.getInt("amplifier", "effect", 0, 0, 10,
 				"The amplifier of the effect. Has no effect with the standard poison effect (blame Mojang).");
 		particles = config.getBoolean("particles", "effect", true,
@@ -57,8 +61,19 @@ public class ConfigManager {
 			blacklist.add(i);
 		}
 		enableCommand = config.getBoolean("enableCommand", "command", true, "Whether to enable the /toxicrain command or not.");
+		rainColor = getColor(config.getString("rainColor", "client", "", "The color of rain. Vanilla is #4667c3. #586100 is a suitable green-brownish color. Leave empty to disable."));
+		rainDropsColor = getColor(config.getString("rainDropsColor", "client", "", "The color of rain that hits the ground. Vanilla is #4667c3. #586100 is a suitable green-brownish color. Leave empty to disable."));
+		snowColor = getColor(config.getString("snowColor", "client", "", "The color of rain that hits the ground. Vanilla is #ffffff. #586100 is a suitable green-brownish color. Leave empty to disable."));
 		if (config.hasChanged()) {
 			config.save();
+		}
+	}
+
+	private static Color getColor(String s) {
+		if (s.isEmpty()) {
+			return null;
+		} else {
+			return Color.decode(s);
 		}
 	}
 }

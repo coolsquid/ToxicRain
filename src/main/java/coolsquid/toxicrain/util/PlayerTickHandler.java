@@ -10,10 +10,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PlayerTickHandler {
 
@@ -35,7 +37,7 @@ public class PlayerTickHandler {
 
 	@SubscribeEvent
 	public void onPlayerTick(PlayerTickEvent event) {
-		if (event.phase == Phase.END && event.side == Side.SERVER && event.player.ticksExisted % ConfigManager.checkTimeDivisor == 0) {
+		if (event.phase == Phase.END && !event.player.world.isRemote && event.player.ticksExisted % ConfigManager.checkTimeDivisor == 0) {
 			IPlayerData cap = event.player.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH);
 			if (cap.getDelay() == -1) {
 				return;
@@ -65,6 +67,12 @@ public class PlayerTickHandler {
 				}
 			}
 		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void onWorldLoad(WorldEvent.Load event) {
+		ClientHandler.colorizeTextures(isPoisonousDimension(event.getWorld().provider.getDimension()));
 	}
 
 	private static boolean isPoisonousDimension(int dim) {

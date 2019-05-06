@@ -46,7 +46,7 @@ public class ToxicRain {
 	}
 
 	@Mod.EventHandler
-	public void onInit(FMLInitializationEvent event) {
+	public void onInit(FMLInitializationEvent event) throws Exception {
 		if (ConfigManager.enableAntidote) {
 			BrewingRecipeRegistry.addRecipe(
 					PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM, 1), PotionTypes.POISON),
