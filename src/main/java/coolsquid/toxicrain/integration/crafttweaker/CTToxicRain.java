@@ -11,7 +11,7 @@ import stanhebben.zenscript.annotations.ZenGetter;
 import stanhebben.zenscript.annotations.ZenSetter;
 
 /**
- * The actual ToxicRain CT API.
+ * The actual ToxicRain CT integration.
  * 
  * Can be retrieved through {@link CTPlayerExtension#getToxicRain(IPlayer)}.
  */
@@ -27,6 +27,8 @@ public interface CTToxicRain {
 	 * 
 	 * Must be either -1, 0 or a positive integer.
 	 * 
+	 * Should be wrapped in an {@code if (!player.world.remote)} block.
+	 * 
 	 * @see {@link #getDelay()}
 	 */
 	@ZenSetter("delay")
@@ -37,6 +39,8 @@ public interface CTToxicRain {
 	 * again.
 	 * 
 	 * Can be -1, 0 or a positive integer.
+	 * 
+	 * Should be wrapped in an {@code if (!player.world.remote)} block.
 	 * 
 	 * @see {@link #setDelay(int)}
 	 */
@@ -62,13 +66,21 @@ public interface CTToxicRain {
 			EntityPlayer actualPlayer = (EntityPlayer) this.player.getInternal();
 			if (!actualPlayer.world.isRemote) {
 				actualPlayer.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(ticks);
+			} else {
+				CraftTweakerAPI.getLogger().logWarning(
+						"Tried to access \"toxicRain.delay\", which is not accessible on the client. This is unlikely to cause any major issues, unless you rely on it to execute important client-side logic. You may nonetheless want to wrap the relevant script section in an if (!player.world.remote) block.");
 			}
 		}
 
 		@Override
 		public int getDelay() {
 			EntityPlayer actualPlayer = (EntityPlayer) this.player.getInternal();
-			return actualPlayer.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).getDelay();
+			if (!actualPlayer.world.isRemote) {
+				return actualPlayer.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).getDelay();
+			}
+			CraftTweakerAPI.getLogger().logWarning(
+					"Tried to access \"toxicRain.delay\", which is not accessible on the client. This is unlikely to cause any major issues, unless you rely on it to execute important client-side logic. You may nonetheless want to wrap the relevant script section in an if (!player.world.remote) block. Returning 0.");
+			return 0;
 		}
 	}
 }

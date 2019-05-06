@@ -31,7 +31,7 @@ public interface IPlayerData {
 	 * 
 	 * @see {@link #getDelay()}
 	 * 
-	 * @throws RuntimeException If {@code ticks < -1 || (ticks < 0 && ticks != -1)}.
+	 * @throws IllegalArgumentException If {@code ticks < -1 || (ticks < 0 && ticks != -1)}.
 	 */
 	public void setDelay(int ticks);
 
