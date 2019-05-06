@@ -1,12 +1,12 @@
 [{
   "modid": "toxicrain",
   "name": "ToxicRain",
-  "description": "",
+  "description": "There is no such thing as bad weather.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "https://coolsquid.me",
+  "url": "https://minecraft.curseforge.com/projects/toxicrain",
   "authorList": ["CoolSquid"],
-  "credits": "",
+  "credits": "spacechase0, who created the original Toxic Rain mod, which inspired this one.",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
