@@ -1,5 +1,6 @@
 package coolsquid.toxicrain;
 
+import coolsquid.toxicrain.config.ConfigManager;
 import coolsquid.toxicrain.util.CommandToxicRain;
 import coolsquid.toxicrain.util.IPlayerData;
 import coolsquid.toxicrain.util.PlayerTickHandler;
@@ -22,7 +23,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod(modid = ToxicRain.MODID, name = ToxicRain.NAME, version = ToxicRain.VERSION, dependencies = ToxicRain.DEPENDENCIES, updateJSON = ToxicRain.UPDATE_JSON)
+@Mod(modid = ToxicRain.MODID, name = ToxicRain.NAME, version = ToxicRain.VERSION, dependencies = ToxicRain.DEPENDENCIES, updateJSON = ToxicRain.UPDATE_JSON, guiFactory = "coolsquid.toxicrain.config.ConfigGuiFactory")
 public class ToxicRain {
 
 	public static final String MODID = "toxicrain";

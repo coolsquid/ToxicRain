@@ -1,7 +1,9 @@
 package coolsquid.toxicrain.util;
 
-import coolsquid.toxicrain.ConfigManager;
 import coolsquid.toxicrain.ToxicRain;
+import coolsquid.toxicrain.config.ConfigGuiFactory;
+import coolsquid.toxicrain.config.ConfigManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
@@ -11,6 +13,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -73,6 +76,19 @@ public class PlayerTickHandler {
 	@SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load event) {
 		ClientHandler.colorizeTextures(isPoisonousDimension(event.getWorld().provider.getDimension()));
+	}
+
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void onConfigChanged(OnConfigChangedEvent event) {
+		if (event.getModID().equals(ToxicRain.MODID)) {
+			ConfigGuiFactory.config.save();
+			ConfigGuiFactory.config = null;
+			ConfigManager.load();
+			if (Minecraft.getMinecraft().world != null) {
+				ClientHandler.colorizeTextures(isPoisonousDimension(Minecraft.getMinecraft().world.provider.getDimension()));
+			}
+		}
 	}
 
 	private static boolean isPoisonousDimension(int dim) {

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import coolsquid.toxicrain.ConfigManager;
+import coolsquid.toxicrain.config.ConfigManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
@@ -27,7 +27,7 @@ public class ClientHandler {
 	public static final ResourceLocation SNOW_ORIGINAL_TEXTURE = new ResourceLocation("minecraft", "textures/environment/snow.png");
 	public static final ResourceLocation PARTICLES_ORIGINAL_TEXTURE = new ResourceLocation("minecraft", "textures/particle/particles.png");
 
-	private static IParticleFactory originalRainDropsFactory, originalWaterSplashFactory;
+	public static IParticleFactory originalRainDropsFactory, originalWaterSplashFactory;
 
 	public static void colorizeTextures(boolean toxicDimension) {
 		Minecraft.getMinecraft().addScheduledTask(() -> {
@@ -69,7 +69,7 @@ public class ClientHandler {
 			} else {
 				Minecraft.getMinecraft().getTextureManager().loadTexture(PARTICLES_ORIGINAL_TEXTURE, new SimpleTexture(PARTICLES_ORIGINAL_TEXTURE));
 			}
-			if (ConfigManager.rainDropsColor != null && originalRainDropsFactory == null && originalWaterSplashFactory == null) {
+			if (ConfigManager.rainDropsColor != null && toxicDimension && originalRainDropsFactory == null && originalWaterSplashFactory == null) {
 				Map<Integer, IParticleFactory> particleTypes = ReflectionHelper.getPrivateValue(ParticleManager.class, Minecraft.getMinecraft().effectRenderer, 6);
 				originalRainDropsFactory = particleTypes.get(EnumParticleTypes.WATER_DROP.getParticleID());
 				final float r = ConfigManager.rainDropsColor.getRed() / 255F;

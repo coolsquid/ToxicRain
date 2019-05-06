@@ -1,4 +1,4 @@
-package coolsquid.toxicrain;
+package coolsquid.toxicrain.config;
 
 import java.awt.Color;
 import java.io.File;
@@ -30,7 +30,9 @@ public class ConfigManager {
 	public static Color rainColor, rainDropsColor;
 	public static Color snowColor;
 
-	static void load() {
+	public static boolean enableConfigGui;
+
+	public static void load() {
 		Configuration config = new Configuration(new File("config/ToxicRain.cfg"));
 		enableAntidote = config.getBoolean("enabled", "antidote", true, "Whether to enable the antidote potion.");
 		antidoteDuration = config.getInt("duration", "antidote", 3600, 1, 36000,
@@ -64,6 +66,7 @@ public class ConfigManager {
 		rainColor = getColor(config.getString("rainColor", "client", "", "The color of rain. Vanilla is #4667c3. #586100 is a suitable green-brownish color. Leave empty to disable."));
 		rainDropsColor = getColor(config.getString("rainDropsColor", "client", "", "The color of rain that hits the ground. Vanilla is #4667c3. #586100 is a suitable green-brownish color. Leave empty to disable."));
 		snowColor = getColor(config.getString("snowColor", "client", "", "The color of rain that hits the ground. Vanilla is #ffffff. #586100 is a suitable green-brownish color. Leave empty to disable."));
+		enableConfigGui = config.getBoolean("enableConfigGui", "client", true, "Whether to enable the in-game configuration screen or not.");
 		if (config.hasChanged()) {
 			config.save();
 		}
