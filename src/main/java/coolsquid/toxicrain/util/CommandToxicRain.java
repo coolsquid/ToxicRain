@@ -32,7 +32,9 @@ public class CommandToxicRain extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if (args.length < 1) {
-			sender.sendMessage(new TextComponentString("<ToxicRain> ").setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation("toxicrain.command.usage")));
+			sender.sendMessage(
+					new TextComponentString("<ToxicRain> ").setStyle(new Style().setColor(TextFormatting.BLUE))
+							.appendSibling(new TextComponentTranslation("toxicrain.command.usage")));
 		} else {
 			switch (args[0]) {
 			case "delay":
@@ -54,11 +56,15 @@ public class CommandToxicRain extends CommandBase {
 		if (args.length == 2) {
 			EntityPlayerMP player = getPlayer(sender.getServer(), sender, args[1]);
 			player.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(0);
-			sender.sendMessage(new TextComponentString("<ToxicRain> ").setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation("toxicrain.command.enable.success", player.getDisplayNameString())));
+			sender.sendMessage(new TextComponentString("<ToxicRain> ")
+					.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
+							"toxicrain.command.enable.success", player.getDisplayNameString())));
 		} else if (args.length == 1) {
 			if (sender.getCommandSenderEntity() instanceof EntityPlayerMP) {
 				sender.getCommandSenderEntity().getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(0);
-				sender.sendMessage(new TextComponentString("<ToxicRain> ").setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation("toxicrain.command.enable.success", sender.getDisplayName().getUnformattedText())));
+				sender.sendMessage(new TextComponentString("<ToxicRain> ")
+						.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
+								"toxicrain.command.enable.success", sender.getDisplayName().getUnformattedText())));
 			} else {
 				throw new WrongUsageException("toxicrain.command.error.sendernotplayer", sender.getName());
 			}
@@ -71,11 +77,15 @@ public class CommandToxicRain extends CommandBase {
 		if (args.length == 2) {
 			EntityPlayerMP player = getPlayer(sender.getServer(), sender, args[1]);
 			player.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(-1);
-			sender.sendMessage(new TextComponentString("<ToxicRain> ").setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation("toxicrain.command.disable.success", player.getDisplayNameString())));
+			sender.sendMessage(new TextComponentString("<ToxicRain> ")
+					.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
+							"toxicrain.command.disable.success", player.getDisplayNameString())));
 		} else if (args.length == 1) {
 			if (sender.getCommandSenderEntity() instanceof EntityPlayerMP) {
 				sender.getCommandSenderEntity().getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(-1);
-				sender.sendMessage(new TextComponentString("<ToxicRain> ").setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation("toxicrain.command.disable.success", sender.getDisplayName().getUnformattedText())));
+				sender.sendMessage(new TextComponentString("<ToxicRain> ")
+						.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
+								"toxicrain.command.disable.success", sender.getDisplayName().getUnformattedText())));
 			} else {
 				throw new WrongUsageException("toxicrain.command.error.sendernotplayer", sender.getName());
 			}
@@ -87,12 +97,25 @@ public class CommandToxicRain extends CommandBase {
 	private void delay(String[] args, ICommandSender sender) throws CommandException {
 		if (args.length == 3) {
 			EntityPlayerMP player = getPlayer(sender.getServer(), sender, args[1]);
-			player.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(parseInt(args[2]));
-			sender.sendMessage(new TextComponentString("<ToxicRain> ").setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation("toxicrain.command.delay.success", player.getDisplayName().getFormattedText(), args[1])));
+			int delay = parseInt(args[2]);
+			if (delay < -1 || (delay < 0 && delay != -1)) {
+				throw new WrongUsageException("toxicrain.command.error.baddelay", delay);
+			}
+			player.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(delay);
+			sender.sendMessage(new TextComponentString("<ToxicRain> ")
+					.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
+							"toxicrain.command.delay.success", player.getDisplayName().getFormattedText(), args[1])));
 		} else if (args.length == 2) {
 			if (sender.getCommandSenderEntity() instanceof EntityPlayerMP) {
-				sender.getCommandSenderEntity().getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(parseInt(args[1]));
-				sender.sendMessage(new TextComponentString("<ToxicRain> ").setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation("toxicrain.command.delay.success", sender.getDisplayName().getFormattedText(), args[1])));
+				int delay = parseInt(args[1]);
+				if (delay < -1 || (delay < 0 && delay != -1)) {
+					throw new WrongUsageException("toxicrain.command.error.baddelay", delay);
+				}
+				sender.getCommandSenderEntity().getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(delay);
+				sender.sendMessage(
+						new TextComponentString("<ToxicRain> ").setStyle(new Style().setColor(TextFormatting.BLUE))
+								.appendSibling(new TextComponentTranslation("toxicrain.command.delay.success",
+										sender.getDisplayName().getFormattedText(), args[1])));
 			} else {
 				throw new WrongUsageException("toxicrain.command.error.sendernotplayer", sender.getName());
 			}
@@ -107,7 +130,8 @@ public class CommandToxicRain extends CommandBase {
 		if (args.length == 1) {
 			return getListOfStringsMatchingLastWord(args, "enable", "disable", "delay");
 		} else if (args.length == 2) {
-			return getListOfStringsMatchingLastWord(args, Lists.transform(server.getPlayerList().getPlayers(), (player) -> player.getDisplayNameString()));
+			return getListOfStringsMatchingLastWord(args,
+					Lists.transform(server.getPlayerList().getPlayers(), (player) -> player.getDisplayNameString()));
 		}
 		return super.getTabCompletions(server, sender, args, targetPos);
 	}

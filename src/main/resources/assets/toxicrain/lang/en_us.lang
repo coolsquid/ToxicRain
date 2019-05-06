@@ -13,3 +13,4 @@ toxicrain.command.disable.success=Rain will no longer be toxic for %s.
 toxicrain.command.error.unknownsubcommand=Unknown subcommand: %s
 toxicrain.command.error.sendernotplayer=Command sender (%s) is not a player. Try specifying a player name as the last argument.
 toxicrain.command.error.wrongnumberofarguments=Wrong number of arguments: %s
+toxicrain.command.error.baddelay=%s is not a valid delay. The delay must be either -1, 0 or a positive integer.
