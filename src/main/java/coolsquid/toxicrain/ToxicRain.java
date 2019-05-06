@@ -3,7 +3,7 @@ package coolsquid.toxicrain;
 import coolsquid.toxicrain.config.ConfigManager;
 import coolsquid.toxicrain.util.CommandToxicRain;
 import coolsquid.toxicrain.util.IPlayerData;
-import coolsquid.toxicrain.util.PlayerTickHandler;
+import coolsquid.toxicrain.util.ModEventHandler;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
@@ -42,7 +42,7 @@ public class ToxicRain {
 	public void onPreInit(FMLPreInitializationEvent event) {
 		ConfigManager.load();
 		MinecraftForge.EVENT_BUS.register(this);
-		MinecraftForge.EVENT_BUS.register(PlayerTickHandler.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(new ModEventHandler());
 		CapabilityManager.INSTANCE.register(IPlayerData.class, new IPlayerData.CapabilityStorage(), IPlayerData.Impl::new);
 	}
 

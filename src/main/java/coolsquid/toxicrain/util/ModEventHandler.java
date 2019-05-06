@@ -20,9 +20,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PlayerTickHandler {
-
-	public static final PlayerTickHandler INSTANCE = new PlayerTickHandler();
+public class ModEventHandler {
 
 	@SubscribeEvent
 	public void attachCapabilities(AttachCapabilitiesEvent<Entity> event) {
