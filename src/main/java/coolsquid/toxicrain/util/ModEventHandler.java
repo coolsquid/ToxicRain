@@ -15,6 +15,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,6 +36,16 @@ public class ModEventHandler {
 		if (event.isWasDeath() && !event.getEntityPlayer().world.isRemote) {
 			event.getEntityPlayer().getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH)
 					.setDelay(event.getOriginal().getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).getDelay());
+		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		if (!event.player.world.isRemote && ConfigManager.delayOnDeath != -1) {
+			IPlayerData cap = event.player.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH);
+			if (cap.getDelay() != -1) {
+				cap.setDelay(ConfigManager.delayOnDeath);
+			}
 		}
 	}
 

@@ -11,6 +11,7 @@ public class ConfigManager {
 
 	public static boolean toxicSnow;
 	public static boolean toxicWater;
+	public static int delayOnDeath;
 	public static int checkTimeDivisor;
 
 	public static boolean enableAntidote;
@@ -43,6 +44,7 @@ public class ConfigManager {
 				"If true, being exposed to snow will have the same effect as being exposed to rain.");
 		toxicWater = config.getBoolean("toxicWater", "general", false,
 				"If true, touching water blocks will have the same effect as being exposed to rain.");
+		delayOnDeath = config.getInt("delayOnDeath", "general", 120, -1, Integer.MAX_VALUE, "The delay / grace period, in ticks, until a recently respawned player can be poisoned by rain. -1 does nothing.");
 		checkTimeDivisor = config.getInt("checkTimeDivisor", "general", 5, 1, Integer.MAX_VALUE, "ToxicRain checks whether the player should be poisoned once every xth tick. The performance impact of ToxicRain scales inversely with this value.");
 		effect = config.getString("effect", "effect", "minecraft:poison",
 				"The potion effect to apply to players when exposed to rain.");
