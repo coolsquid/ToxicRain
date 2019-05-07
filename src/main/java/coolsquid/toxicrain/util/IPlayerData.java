@@ -2,7 +2,7 @@ package coolsquid.toxicrain.util;
 
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
@@ -49,12 +49,14 @@ public interface IPlayerData {
 
 		@Override
 		public NBTBase writeNBT(Capability<IPlayerData> capability, IPlayerData instance, EnumFacing side) {
-			return new NBTTagInt(instance.getDelay());
+			NBTTagCompound tag = new NBTTagCompound();
+			tag.setInteger("delay", instance.getDelay());
+			return tag;
 		}
 
 		@Override
 		public void readNBT(Capability<IPlayerData> capability, IPlayerData instance, EnumFacing side, NBTBase nbt) {
-			instance.setDelay(((NBTTagInt) nbt).getInt());
+			instance.setDelay(((NBTTagCompound) nbt).getInteger("delay"));
 		}
 	}
 
@@ -77,7 +79,7 @@ public interface IPlayerData {
 		}
 	}
 
-	public static class Provider implements ICapabilitySerializable<NBTTagInt> {
+	public static class Provider implements ICapabilitySerializable<NBTTagCompound> {
 
 		private final IPlayerData instance = new IPlayerData.Impl();
 
@@ -92,13 +94,15 @@ public interface IPlayerData {
 		}
 
 		@Override
-		public NBTTagInt serializeNBT() {
-			return new NBTTagInt(instance.getDelay());
+		public NBTTagCompound serializeNBT() {
+			NBTTagCompound tag = new NBTTagCompound();
+			tag.setInteger("delay", instance.getDelay());
+			return tag;
 		}
 
 		@Override
-		public void deserializeNBT(NBTTagInt nbt) {
-			instance.setDelay(nbt.getInt());
+		public void deserializeNBT(NBTTagCompound nbt) {
+			instance.setDelay(nbt.getInteger("delay"));
 		}
 	}
 }
