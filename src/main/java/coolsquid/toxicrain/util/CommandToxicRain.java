@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import coolsquid.toxicrain.config.ConfigManager;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -139,5 +140,10 @@ public class CommandToxicRain extends CommandBase {
 	@Override
 	public boolean isUsernameIndex(String[] args, int index) {
 		return index == 1;
+	}
+
+	@Override
+	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+		return ConfigManager.enableCommand && super.checkPermission(server, sender);
 	}
 }
