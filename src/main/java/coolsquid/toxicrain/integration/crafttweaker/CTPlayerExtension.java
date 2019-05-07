@@ -14,10 +14,13 @@ import stanhebben.zenscript.annotations.ZenGetter;
 public class CTPlayerExtension {
 
 	/**
-	 * Retrieves an instance of {@link CTToxicRain}.
+	 * Retrieves an instance of {@link CTPlayerData}.
 	 */
 	@ZenGetter("toxicRain")
-	public static CTToxicRain getToxicRain(IPlayer player) {
-		return new CTToxicRain.Impl(player);
+	public static CTPlayerData getToxicRain(IPlayer player) {
+		if (player == null) {
+			throw new IllegalArgumentException("\"player\" cannot be null!");
+		}
+		return new CTPlayerData.Impl(player);
 	}
 }

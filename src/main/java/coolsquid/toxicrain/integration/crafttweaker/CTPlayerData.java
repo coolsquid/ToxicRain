@@ -16,8 +16,8 @@ import stanhebben.zenscript.annotations.ZenSetter;
  * Can be retrieved through {@link CTPlayerExtension#getToxicRain(IPlayer)}.
  */
 @ZenRegister
-@ZenClass
-public interface CTToxicRain {
+@ZenClass("mods.toxicrain.IPlayerData")
+public interface CTPlayerData {
 
 	/**
 	 * Prevents rain from poisoning the specified player for {@code ticks} ticks.
@@ -47,7 +47,7 @@ public interface CTToxicRain {
 	@ZenGetter("delay")
 	public int getDelay();
 
-	static class Impl implements CTToxicRain {
+	static class Impl implements CTPlayerData {
 
 		private final IPlayer player;
 
