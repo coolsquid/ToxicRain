@@ -21,6 +21,6 @@ public class CTPlayerExtension {
 		if (player == null) {
 			throw new IllegalArgumentException("\"player\" cannot be null!");
 		}
-		return new CTPlayerData.Impl(player);
+		return new CTPlayerData(player);
 	}
 }
