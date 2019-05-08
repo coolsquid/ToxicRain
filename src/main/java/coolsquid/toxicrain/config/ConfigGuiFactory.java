@@ -45,9 +45,6 @@ public class ConfigGuiFactory implements IModGuiFactory {
 		}
 
 		private static List<IConfigElement> getConfigElements(Configuration config) {
-			if (ConfigGuiFactory.config != null) {
-				throw new RuntimeException("What?");
-			}
 			ConfigGuiFactory.config = config;
 			config.load();
 			List<IConfigElement> list = new ArrayList<>();

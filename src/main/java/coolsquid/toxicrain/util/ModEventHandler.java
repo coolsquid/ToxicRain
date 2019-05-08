@@ -89,7 +89,10 @@ public class ModEventHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load event) {
-		ClientHandler.colorizeTextures(isPoisonousDimension(event.getWorld().provider.getDimension()));
+		// This should only fire in client worlds
+		if (event.getWorld().isRemote) {
+			ClientHandler.colorizeTextures(isPoisonousDimension(event.getWorld().provider.getDimension()));
+		}
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -97,9 +100,11 @@ public class ModEventHandler {
 	public void onConfigChanged(OnConfigChangedEvent event) {
 		if (event.getModID().equals(ToxicRain.MODID)) {
 			ConfigGuiFactory.config.save();
-			ConfigGuiFactory.config = null;
 			ConfigManager.load();
 			if (Minecraft.getMinecraft().world != null) {
+				ClientHandler.newRainTexture = null;
+				ClientHandler.newSnowTexture = null;
+				ClientHandler.newParticlesTexture = null;
 				ClientHandler
 						.colorizeTextures(isPoisonousDimension(Minecraft.getMinecraft().world.provider.getDimension()));
 			}
