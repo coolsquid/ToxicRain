@@ -48,7 +48,8 @@ public class ConfigGuiFactory implements IModGuiFactory {
 			ConfigGuiFactory.config = config;
 			config.load();
 			List<IConfigElement> list = new ArrayList<>();
-			config.getCategoryNames().stream().sorted().forEach((e) -> list.add(new ConfigElement(config.getCategory(e))));
+			config.getCategoryNames().stream().sorted()
+					.forEach((e) -> list.add(new ConfigElement(config.getCategory(e))));
 			return list;
 		}
 	}

@@ -23,9 +23,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ClientHandler {
 
-	public static final ResourceLocation RAIN_ORIGINAL_TEXTURE = new ResourceLocation("minecraft", "textures/environment/rain.png");
-	public static final ResourceLocation SNOW_ORIGINAL_TEXTURE = new ResourceLocation("minecraft", "textures/environment/snow.png");
-	public static final ResourceLocation PARTICLES_ORIGINAL_TEXTURE = new ResourceLocation("minecraft", "textures/particle/particles.png");
+	public static final ResourceLocation RAIN_ORIGINAL_TEXTURE =
+			new ResourceLocation("minecraft", "textures/environment/rain.png");
+	public static final ResourceLocation SNOW_ORIGINAL_TEXTURE =
+			new ResourceLocation("minecraft", "textures/environment/snow.png");
+	public static final ResourceLocation PARTICLES_ORIGINAL_TEXTURE =
+			new ResourceLocation("minecraft", "textures/particle/particles.png");
 
 	public static DynamicTexture newRainTexture, newSnowTexture, newParticlesTexture;
 
@@ -42,18 +45,21 @@ public class ClientHandler {
 			if (ConfigManager.rainColor != null && toxicDimension) {
 				newRainTexture = load(ConfigManager.rainColor, RAIN_ORIGINAL_TEXTURE, newRainTexture);
 			} else {
-				Minecraft.getMinecraft().getTextureManager().loadTexture(RAIN_ORIGINAL_TEXTURE, new SimpleTexture(RAIN_ORIGINAL_TEXTURE));
+				Minecraft.getMinecraft().getTextureManager().loadTexture(RAIN_ORIGINAL_TEXTURE,
+						new SimpleTexture(RAIN_ORIGINAL_TEXTURE));
 			}
 			if (ConfigManager.snowColor != null && toxicDimension) {
 				newSnowTexture = load(ConfigManager.snowColor, SNOW_ORIGINAL_TEXTURE, newSnowTexture);
 			} else {
-				Minecraft.getMinecraft().getTextureManager().loadTexture(SNOW_ORIGINAL_TEXTURE, new SimpleTexture(SNOW_ORIGINAL_TEXTURE));
+				Minecraft.getMinecraft().getTextureManager().loadTexture(SNOW_ORIGINAL_TEXTURE,
+						new SimpleTexture(SNOW_ORIGINAL_TEXTURE));
 			}
 			if (ConfigManager.rainDropsColor != null && toxicDimension) {
 				if (newParticlesTexture == null) {
 					boolean b = true;
 					int red = 0, green = 0, blue = 0, alpha = 0;
-					try (InputStream in = Minecraft.getMinecraft().getResourceManager().getResource(PARTICLES_ORIGINAL_TEXTURE).getInputStream()) {
+					try (InputStream in = Minecraft.getMinecraft().getResourceManager()
+							.getResource(PARTICLES_ORIGINAL_TEXTURE).getInputStream()) {
 						BufferedImage im = TextureUtil.readBufferedImage(in);
 						for (int x = 26; x <= 50; x++) {
 							for (int y = 14; y <= 15; y++) {
@@ -67,46 +73,58 @@ public class ClientHandler {
 										blue = 255 - c.getBlue();
 										alpha = 255 - c.getAlpha();
 									}
-									im.setRGB(x, y, new Color(bounds(c.getRed() + red), bounds(c.getGreen() + green), bounds(c.getBlue() + blue), bounds(c.getAlpha() + alpha)).getRGB());
+									im.setRGB(x, y, new Color(bounds(c.getRed() + red), bounds(c.getGreen() + green),
+											bounds(c.getBlue() + blue), bounds(c.getAlpha() + alpha)).getRGB());
 								}
 							}
 						}
 						newParticlesTexture = new DynamicTexture(im);
-						Minecraft.getMinecraft().getTextureManager().loadTexture(PARTICLES_ORIGINAL_TEXTURE, newParticlesTexture);
+						Minecraft.getMinecraft().getTextureManager().loadTexture(PARTICLES_ORIGINAL_TEXTURE,
+								newParticlesTexture);
 					} catch (IOException e) {
 						throw new RuntimeException(e);
 					}
 				}
 			} else {
-				Minecraft.getMinecraft().getTextureManager().loadTexture(PARTICLES_ORIGINAL_TEXTURE, new SimpleTexture(PARTICLES_ORIGINAL_TEXTURE));
+				Minecraft.getMinecraft().getTextureManager().loadTexture(PARTICLES_ORIGINAL_TEXTURE,
+						new SimpleTexture(PARTICLES_ORIGINAL_TEXTURE));
 			}
 			if (ConfigManager.rainDropsColor != null && toxicDimension) {
-				Map<Integer, IParticleFactory> particleTypes = ReflectionHelper.getPrivateValue(ParticleManager.class, Minecraft.getMinecraft().effectRenderer, 6);
+				Map<Integer, IParticleFactory> particleTypes = ReflectionHelper.getPrivateValue(ParticleManager.class,
+						Minecraft.getMinecraft().effectRenderer, 6);
 				rainRed = ConfigManager.rainDropsColor.getRed() / 255F;
 				rainGreen = ConfigManager.rainDropsColor.getGreen() / 255F;
 				rainBlue = ConfigManager.rainDropsColor.getBlue() / 255F;
 				if (originalRainDropsFactory == null) {
 					originalRainDropsFactory = particleTypes.get(EnumParticleTypes.WATER_DROP.getParticleID());
-					Minecraft.getMinecraft().effectRenderer.registerParticle(EnumParticleTypes.WATER_DROP.getParticleID(), (particleID, worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, p_178902_15_) -> {
-						Particle particle = originalRainDropsFactory.createParticle(particleID, worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, p_178902_15_);
-						particle.setRBGColorF(rainRed,rainGreen,rainBlue);
-						return particle;
-					});
+					Minecraft.getMinecraft().effectRenderer
+							.registerParticle(EnumParticleTypes.WATER_DROP.getParticleID(), (particleID, worldIn,
+									xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, p_178902_15_) -> {
+								Particle particle = originalRainDropsFactory.createParticle(particleID, worldIn,
+										xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, p_178902_15_);
+								particle.setRBGColorF(rainRed, rainGreen, rainBlue);
+								return particle;
+							});
 				}
 				if (originalWaterSplashFactory == null) {
 					originalWaterSplashFactory = particleTypes.get(EnumParticleTypes.WATER_SPLASH.getParticleID());
-					Minecraft.getMinecraft().effectRenderer.registerParticle(EnumParticleTypes.WATER_SPLASH.getParticleID(), (particleID, worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, p_178902_15_) -> {
-						Particle particle = originalWaterSplashFactory.createParticle(particleID, worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, p_178902_15_);
-						particle.setRBGColorF(0, 52 / 255F, 204 / 255F);
-						return particle;
-					});
+					Minecraft.getMinecraft().effectRenderer
+							.registerParticle(EnumParticleTypes.WATER_SPLASH.getParticleID(), (particleID, worldIn,
+									xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, p_178902_15_) -> {
+								Particle particle = originalWaterSplashFactory.createParticle(particleID, worldIn,
+										xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, p_178902_15_);
+								particle.setRBGColorF(0, 52 / 255F, 204 / 255F);
+								return particle;
+							});
 				}
 			} else {
 				if (originalRainDropsFactory != null) {
-					Minecraft.getMinecraft().effectRenderer.registerParticle(EnumParticleTypes.WATER_DROP.getParticleID(), originalRainDropsFactory);
+					Minecraft.getMinecraft().effectRenderer
+							.registerParticle(EnumParticleTypes.WATER_DROP.getParticleID(), originalRainDropsFactory);
 				}
 				if (originalWaterSplashFactory != null) {
-					Minecraft.getMinecraft().effectRenderer.registerParticle(EnumParticleTypes.WATER_SPLASH.getParticleID(), originalWaterSplashFactory);
+					Minecraft.getMinecraft().effectRenderer.registerParticle(
+							EnumParticleTypes.WATER_SPLASH.getParticleID(), originalWaterSplashFactory);
 				}
 			}
 		});
@@ -130,7 +148,8 @@ public class ClientHandler {
 								blue = color.getBlue() - c.getBlue();
 								alpha = color.getAlpha() - c.getAlpha();
 							}
-							im.setRGB(x, y, new Color(bounds(c.getRed() + red), bounds(c.getGreen() + green), bounds(c.getBlue() + blue), bounds(c.getAlpha() + alpha)).getRGB());
+							im.setRGB(x, y, new Color(bounds(c.getRed() + red), bounds(c.getGreen() + green),
+									bounds(c.getBlue() + blue), bounds(c.getAlpha() + alpha)).getRGB());
 						}
 					}
 				}

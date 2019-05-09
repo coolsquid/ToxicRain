@@ -40,9 +40,8 @@ public class CTPlayerData {
 	@ZenSetter("delay")
 	public void setDelay(int ticks) {
 		if (ticks < -1 || (ticks < 0 && ticks != -1)) {
-			CraftTweakerAPI
-					.logError("\"ticks\" must be either -1, 0, or a positive integer. Automatically changing "
-							+ ticks + " to -1.");
+			CraftTweakerAPI.logError("\"ticks\" must be either -1, 0, or a positive integer. Automatically changing "
+					+ ticks + " to -1.");
 			ticks = -1;
 		}
 		EntityPlayer actualPlayer = (EntityPlayer) this.player.getInternal();

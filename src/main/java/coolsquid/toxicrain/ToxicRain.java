@@ -23,14 +23,16 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod(modid = ToxicRain.MODID, name = ToxicRain.NAME, version = ToxicRain.VERSION, dependencies = ToxicRain.DEPENDENCIES, updateJSON = ToxicRain.UPDATE_JSON, guiFactory = "coolsquid.toxicrain.config.ConfigGuiFactory")
+@Mod(modid = ToxicRain.MODID, name = ToxicRain.NAME, version = ToxicRain.VERSION, dependencies = ToxicRain.DEPENDENCIES,
+		updateJSON = ToxicRain.UPDATE_JSON, guiFactory = "coolsquid.toxicrain.config.ConfigGuiFactory")
 public class ToxicRain {
 
 	public static final String MODID = "toxicrain";
 	public static final String NAME = "ToxicRain";
 	public static final String VERSION = "1.1.0";
 	public static final String DEPENDENCIES = "required-after:forge@[14.21.1.2387,)";
-	public static final String UPDATE_JSON = "https://gist.githubusercontent.com/coolsquid/6b48d527776a66c644e1ce1b3c2776ae/raw/ee5b59727ebe6fc720a7104975ab1f9991b849a4/toxicrain.json";
+	public static final String UPDATE_JSON =
+			"https://gist.githubusercontent.com/coolsquid/6b48d527776a66c644e1ce1b3c2776ae/raw/ee5b59727ebe6fc720a7104975ab1f9991b849a4/toxicrain.json";
 
 	public static Potion effect;
 
@@ -43,7 +45,8 @@ public class ToxicRain {
 		ConfigManager.load();
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(new ModEventHandler());
-		CapabilityManager.INSTANCE.register(IPlayerData.class, new IPlayerData.CapabilityStorage(), IPlayerData.Impl::new);
+		CapabilityManager.INSTANCE.register(IPlayerData.class, new IPlayerData.CapabilityStorage(),
+				IPlayerData.Impl::new);
 	}
 
 	@Mod.EventHandler
@@ -67,14 +70,15 @@ public class ToxicRain {
 
 	@Mod.EventHandler
 	public void onServerStarting(FMLServerStartingEvent event) {
-		if (ConfigManager.enableCommand ) {
+		if (ConfigManager.enableCommand) {
 			event.registerServerCommand(new CommandToxicRain());
 		}
 	}
 
 	@SubscribeEvent
 	public void registerPotion(RegistryEvent.Register<Potion> event) {
-		antidote = new Potion(false, 14500000) {};
+		antidote = new Potion(false, 14500000) {
+		};
 		antidote.setRegistryName(new ResourceLocation(MODID, "antidote"));
 		event.getRegistry().register(antidote);
 	}
