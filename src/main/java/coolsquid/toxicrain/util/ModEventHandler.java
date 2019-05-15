@@ -158,7 +158,9 @@ public class ModEventHandler {
 	@SubscribeEvent
 	public void onConfigChanged(OnConfigChangedEvent event) {
 		if (event.getModID().equals(ToxicRain.MODID)) {
-			ConfigGuiFactory.config.save();
+			if (Minecraft.getMinecraft().currentScreen instanceof ConfigGuiFactory.Gui) {
+				((ConfigGuiFactory.Gui) Minecraft.getMinecraft().currentScreen).config.save();
+			}
 			ConfigManager.load();
 			if (Minecraft.getMinecraft().world != null) {
 				ClientHandler.newRainTexture = null;

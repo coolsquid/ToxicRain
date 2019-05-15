@@ -16,8 +16,6 @@ import net.minecraftforge.fml.client.config.IConfigElement;
 
 public class ConfigGuiFactory implements IModGuiFactory {
 
-	public static Configuration config;
-
 	@Override
 	public void initialize(Minecraft minecraftInstance) {
 	}
@@ -39,13 +37,15 @@ public class ConfigGuiFactory implements IModGuiFactory {
 
 	public static class Gui extends GuiConfig {
 
+		public final Configuration config;
+
 		public Gui(GuiScreen parent, Configuration config) {
 			super(parent, getConfigElements(config), ToxicRain.MODID, ToxicRain.MODID, false, false,
 					ToxicRain.NAME + " configuration", config.getConfigFile().getAbsolutePath());
+			this.config = config;
 		}
 
 		private static List<IConfigElement> getConfigElements(Configuration config) {
-			ConfigGuiFactory.config = config;
 			config.load();
 			List<IConfigElement> list = new ArrayList<>();
 			config.getCategoryNames().stream().filter((s) -> !s.contains(".")).sorted()
