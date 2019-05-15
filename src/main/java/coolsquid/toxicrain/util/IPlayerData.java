@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
@@ -46,6 +47,24 @@ public interface IPlayerData {
 	 */
 	public int getDelay();
 
+	/**
+	 * Whether this is the first time the player has spawned/logged in. Used to
+	 * apply the spawn delay. Primarily intended to be used within the
+	 * {@link PlayerLoggedInEvent}.
+	 * 
+	 * @return Whether this is the first time the player has spawned/logged in.
+	 */
+	public boolean isFirstSpawn();
+
+	/**
+	 * For internal use only!
+	 * 
+	 * Implementations should assume that this is the first spawn until this method
+	 * is called. The method is automatically called if the capability is loaded
+	 * from NBT data, which implies that the player has been in the world before.
+	 */
+	public void setFirstSpawn(boolean firstSpawn);
+
 	public static class CapabilityStorage implements IStorage<IPlayerData> {
 
 		@Override
@@ -58,11 +77,13 @@ public interface IPlayerData {
 		@Override
 		public void readNBT(Capability<IPlayerData> capability, IPlayerData instance, EnumFacing side, NBTBase nbt) {
 			instance.setDelay(((NBTTagCompound) nbt).getInteger("delay"));
+			instance.setFirstSpawn(false);
 		}
 	}
 
 	public static class Impl implements IPlayerData {
 
+		private boolean firstSpawn = true;
 		private int ticks = 0;
 
 		@Override
@@ -77,6 +98,16 @@ public interface IPlayerData {
 		@Override
 		public int getDelay() {
 			return this.ticks;
+		}
+
+		@Override
+		public boolean isFirstSpawn() {
+			return firstSpawn;
+		}
+
+		@Override
+		public void setFirstSpawn(boolean firstSpawn) {
+			this.firstSpawn = firstSpawn;
 		}
 	}
 
@@ -104,6 +135,7 @@ public interface IPlayerData {
 		@Override
 		public void deserializeNBT(NBTTagCompound nbt) {
 			instance.setDelay(nbt.getInteger("delay"));
+			instance.setFirstSpawn(false);
 		}
 	}
 }

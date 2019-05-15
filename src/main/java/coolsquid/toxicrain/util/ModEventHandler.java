@@ -11,10 +11,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -50,6 +51,26 @@ public class ModEventHandler {
 	}
 
 	@SubscribeEvent
+	public void onPlayerSpawn(PlayerLoggedInEvent event) {
+		if (!event.player.world.isRemote) {
+			IPlayerData cap = event.player.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH);
+			if (cap.isFirstSpawn()) {
+				if (cap.getDelay() != -1) {
+					cap.setDelay(ConfigManager.delayOnSpawn);
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerSpawn(EntityJoinWorldEvent event) {
+		if (!event.getEntity().world.isRemote && event.getEntity() instanceof EntityPlayer) {
+			IPlayerData cap = event.getEntity().getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH);
+			System.out.println(cap.isFirstSpawn());
+		}
+	}
+
+	@SubscribeEvent
 	public void onPlayerTick(PlayerTickEvent event) {
 		if (event.phase == Phase.END && !event.player.world.isRemote
 				&& event.player.ticksExisted % ConfigManager.checkTimeDivisor == 0) {
@@ -63,35 +84,23 @@ public class ModEventHandler {
 			if (ConfigManager.enableAntidote && event.player.isPotionActive(ToxicRain.antidote)) {
 				return;
 			}
-			if (isPoisonousDimension(event.player.world.provider.getDimension())) {
-				if (event.player.isInWater() && ConfigManager.toxicWater) {
-					event.player.addPotionEffect(new PotionEffect(ToxicRain.effect, ConfigManager.duration,
-							ConfigManager.amplifier, false, ConfigManager.particles));
-				} else {
-					if (!event.player.world.isRaining()) {
-						return;
-					} else if (!event.player.world.canSeeSky(event.player.getPosition())) {
-						return;
-					} else if (event.player.world.getPrecipitationHeight(event.player.getPosition())
-							.getY() > event.player.getPosition().getY()) {
-						return;
-					}
-					Biome biome = event.player.world.getBiome(event.player.getPosition());
-					if (biome.canRain() || biome.getEnableSnow() && ConfigManager.toxicSnow) {
+			if (ConfigManager.isPoisonousDimension(event.player.world.provider.getDimension())) {
+				float moonPhaseFactor = event.player.world.getCurrentMoonPhaseFactor();
+				if (moonPhaseFactor >= ConfigManager.minMoonFullness
+						&& moonPhaseFactor <= ConfigManager.maxMoonFullness) {
+					if (event.player.isInWater() && ConfigManager.toxicWater) {
 						event.player.addPotionEffect(new PotionEffect(ToxicRain.effect, ConfigManager.duration,
 								ConfigManager.amplifier, false, ConfigManager.particles));
+					} else if (event.player.world.isRaining() && event.player.world.canSeeSky(event.player.getPosition()) && event.player.world.getPrecipitationHeight(event.player.getPosition())
+								.getY() <= event.player.getPosition().getY()) {
+						Biome biome = event.player.world.getBiome(event.player.getPosition());
+						if (biome.canRain() || biome.getEnableSnow() && ConfigManager.toxicSnow) {
+							event.player.addPotionEffect(new PotionEffect(ToxicRain.effect, ConfigManager.duration,
+									ConfigManager.amplifier, false, ConfigManager.particles));
+						}
 					}
 				}
 			}
-		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public void onWorldLoad(WorldEvent.Load event) {
-		// This should only fire in client worlds
-		if (event.getWorld().isRemote) {
-			ClientHandler.colorizeTextures(isPoisonousDimension(event.getWorld().provider.getDimension()));
 		}
 	}
 
@@ -106,16 +115,8 @@ public class ModEventHandler {
 				ClientHandler.newSnowTexture = null;
 				ClientHandler.newParticlesTexture = null;
 				ClientHandler
-						.colorizeTextures(isPoisonousDimension(Minecraft.getMinecraft().world.provider.getDimension()));
+						.colorizeTextures(ConfigManager.isPoisonousDimension(Minecraft.getMinecraft().world.provider.getDimension()), Minecraft.getMinecraft().world.getCurrentMoonPhaseFactor());
 			}
-		}
-	}
-
-	private static boolean isPoisonousDimension(int dim) {
-		if (ConfigManager.isWhitelist) {
-			return ConfigManager.blacklist.contains(dim);
-		} else {
-			return !ConfigManager.blacklist.contains(dim);
 		}
 	}
 }
