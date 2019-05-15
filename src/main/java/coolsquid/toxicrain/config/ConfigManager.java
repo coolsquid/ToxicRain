@@ -3,6 +3,7 @@ package coolsquid.toxicrain.config;
 import java.awt.Color;
 import java.io.File;
 
+import coolsquid.toxicrain.ToxicRain;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import net.minecraftforge.common.config.Configuration;
@@ -42,7 +43,7 @@ public class ConfigManager {
 	public static boolean enableConfigGui;
 
 	public static void load() {
-		Configuration config = new Configuration(new File("config/ToxicRain.cfg"));
+		Configuration config = new Configuration(new File("config/ToxicRain.cfg"), ToxicRain.VERSION);
 		enableAntidote = config.getBoolean("enabled", "antidote", true, "Whether to enable the antidote potion.");
 		antidoteDuration = config.getInt("duration", "antidote", 3600, 1, 36000,
 				"The duration of the antidote effect, in ticks (1/20th seconds).");
