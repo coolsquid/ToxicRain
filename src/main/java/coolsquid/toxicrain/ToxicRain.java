@@ -1,5 +1,7 @@
 package coolsquid.toxicrain;
 
+import com.google.common.base.Preconditions;
+
 import coolsquid.toxicrain.config.ConfigManager;
 import coolsquid.toxicrain.util.CommandToxicRain;
 import coolsquid.toxicrain.util.IPlayerData;
@@ -65,7 +67,7 @@ public class ToxicRain {
 
 	@Mod.EventHandler
 	public void onPostInit(FMLPostInitializationEvent event) {
-		effect = Potion.getPotionFromResourceLocation(ConfigManager.effect);
+		effect = Preconditions.checkNotNull(Potion.getPotionFromResourceLocation(ConfigManager.effect), "The effect cannot be null");
 	}
 
 	@Mod.EventHandler
