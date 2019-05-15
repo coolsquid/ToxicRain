@@ -11,7 +11,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -59,14 +58,6 @@ public class ModEventHandler {
 					cap.setDelay(ConfigManager.delayOnSpawn);
 				}
 			}
-		}
-	}
-
-	@SubscribeEvent
-	public void onPlayerSpawn(EntityJoinWorldEvent event) {
-		if (!event.getEntity().world.isRemote && event.getEntity() instanceof EntityPlayer) {
-			IPlayerData cap = event.getEntity().getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH);
-			System.out.println(cap.isFirstSpawn());
 		}
 	}
 
