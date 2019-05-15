@@ -27,7 +27,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod(modid = ToxicRain.MODID, name = ToxicRain.NAME, version = ToxicRain.VERSION, dependencies = ToxicRain.DEPENDENCIES,
-		updateJSON = ToxicRain.UPDATE_JSON, guiFactory = "coolsquid.toxicrain.config.ConfigGuiFactory")
+		updateJSON = ToxicRain.UPDATE_JSON, guiFactory = "coolsquid.toxicrain.config.ConfigGuiFactory", acceptableRemoteVersions = "*")
 public class ToxicRain {
 
 	public static final String MODID = "toxicrain";
