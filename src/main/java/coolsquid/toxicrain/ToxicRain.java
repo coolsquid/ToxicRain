@@ -3,6 +3,7 @@ package coolsquid.toxicrain;
 import com.google.common.base.Preconditions;
 
 import coolsquid.toxicrain.config.ConfigManager;
+import coolsquid.toxicrain.network.PacketManager;
 import coolsquid.toxicrain.util.CommandToxicRain;
 import coolsquid.toxicrain.util.IPlayerData;
 import coolsquid.toxicrain.util.ModEventHandler;
@@ -63,6 +64,7 @@ public class ToxicRain {
 					new ItemStack(Items.REDSTONE),
 					PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM, 1), longAntidoteType));
 		}
+		PacketManager.load();
 	}
 
 	@Mod.EventHandler

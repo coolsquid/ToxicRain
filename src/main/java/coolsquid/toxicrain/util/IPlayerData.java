@@ -1,14 +1,15 @@
 package coolsquid.toxicrain.util;
 
+import coolsquid.toxicrain.network.PacketManager;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 /**
  * Lets other mods, the CraftTweaker integration and the /toxicrain command
@@ -53,6 +54,7 @@ public interface IPlayerData {
 	 * {@link PlayerLoggedInEvent}.
 	 * 
 	 * @return Whether this is the first time the player has spawned/logged in.
+	 * @see #setFirstSpawn(boolean)
 	 */
 	public boolean isFirstSpawn();
 
@@ -62,8 +64,29 @@ public interface IPlayerData {
 	 * Implementations should assume that this is the first spawn until this method
 	 * is called. The method is automatically called if the capability is loaded
 	 * from NBT data, which implies that the player has been in the world before.
+	 * 
+	 * @see #isFirstSpawn()
 	 */
 	public void setFirstSpawn(boolean firstSpawn);
+
+	/**
+	 * Whether the server has told the client that the player can experience toxic
+	 * rain. This prevents the server from sending unnecessary packets.
+	 * 
+	 * @return Whether the server has told the client that the player can experience
+	 *         toxic rain.
+	 * @see #areClientTweaksActive()
+	 */
+	public boolean areClientTweaksActive();
+
+	/**
+	 * Should be called whenever
+	 * {@link PacketManager#sendToxicityUpdate(boolean, net.minecraft.entity.player.EntityPlayerMP)}
+	 * is invoked.
+	 * 
+	 * @see #areClientTweaksActive()
+	 */
+	public void setClientTweaksActive(boolean clientTweaksActive);
 
 	public static class CapabilityStorage implements IStorage<IPlayerData> {
 
@@ -84,6 +107,7 @@ public interface IPlayerData {
 	public static class Impl implements IPlayerData {
 
 		private boolean firstSpawn = true;
+		private boolean areClientTweaksActive;
 		private int ticks = 0;
 
 		@Override
@@ -108,6 +132,16 @@ public interface IPlayerData {
 		@Override
 		public void setFirstSpawn(boolean firstSpawn) {
 			this.firstSpawn = firstSpawn;
+		}
+
+		@Override
+		public boolean areClientTweaksActive() {
+			return areClientTweaksActive;
+		}
+
+		@Override
+		public void setClientTweaksActive(boolean b) {
+			areClientTweaksActive = b;
 		}
 	}
 

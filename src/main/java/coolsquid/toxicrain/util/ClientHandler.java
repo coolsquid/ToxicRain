@@ -37,12 +37,13 @@ public class ClientHandler {
 	private static float rainGreen;
 	private static float rainBlue;
 
+	public static boolean enable;
+
 	/**
 	 * TODO: optimize & find a prettier way to mess with the particle texture
 	 */
-	public static void colorizeTextures(boolean toxicDimension, float moonPhaseFactor) {
-		boolean enable = toxicDimension && moonPhaseFactor >= ConfigManager.minMoonFullness
-				&& moonPhaseFactor <= ConfigManager.maxMoonFullness;
+	public static void colorizeTextures(boolean enable) {
+		ClientHandler.enable = enable;
 		Minecraft.getMinecraft().addScheduledTask(() -> {
 			if (ConfigManager.rainColor != null && enable) {
 				newRainTexture = load(ConfigManager.rainColor, RAIN_ORIGINAL_TEXTURE, newRainTexture);
@@ -81,12 +82,12 @@ public class ClientHandler {
 							}
 						}
 						newParticlesTexture = new DynamicTexture(im);
-						Minecraft.getMinecraft().getTextureManager().loadTexture(PARTICLES_ORIGINAL_TEXTURE,
-								newParticlesTexture);
 					} catch (IOException e) {
 						throw new RuntimeException(e);
 					}
 				}
+				Minecraft.getMinecraft().getTextureManager().loadTexture(PARTICLES_ORIGINAL_TEXTURE,
+						newParticlesTexture);
 			} else {
 				Minecraft.getMinecraft().getTextureManager().loadTexture(PARTICLES_ORIGINAL_TEXTURE,
 						new SimpleTexture(PARTICLES_ORIGINAL_TEXTURE));

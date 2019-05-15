@@ -3,10 +3,8 @@ package coolsquid.toxicrain.config;
 import java.awt.Color;
 import java.io.File;
 
-import coolsquid.toxicrain.util.ClientEventHandler;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
 public class ConfigManager {
@@ -15,6 +13,10 @@ public class ConfigManager {
 	public static boolean toxicWater;
 	public static int delayOnSpawn;
 	public static int delayOnDeath;
+	public static int delayOnSleep;
+	public static boolean delayOnSpawnMessage;
+	public static boolean delayOnDeathMessage;
+	public static boolean delayOnSleepMessage;
 	public static int checkTimeDivisor;
 
 	public static boolean enableAntidote;
@@ -51,12 +53,17 @@ public class ConfigManager {
 				"If true, being exposed to snow will have the same effect as being exposed to rain.");
 		toxicWater = config.getBoolean("toxicWater", "general", false,
 				"If true, touching water blocks will have the same effect as being exposed to rain.");
-		minMoonFullness = config.getFloat("minFullness", "general.moon", 0, 0, 1, "");
-		maxMoonFullness = config.getFloat("maxFullness", "general.moon", 1, 0, 1, "");
-		delayOnSpawn = config.getInt("delayOnSpawn", "general", 600, -1, Integer.MAX_VALUE,
+		minMoonFullness = config.getFloat("minFullness", "general.moon", 0, 0, 1, "Rain will only be toxic when the moon is at least this full.");
+		maxMoonFullness = config.getFloat("maxFullness", "general.moon", 1, 0, 1, "Rain will only be toxic when the moon is at most this full.");
+		delayOnSpawn = config.getInt("delayOnSpawn", "grace_periods", 600, -1, Integer.MAX_VALUE,
 				"The delay / grace period, in ticks, until a recently spawned player can be poisoned by rain. -1 does nothing.");
-		delayOnDeath = config.getInt("delayOnDeath", "general", 200, -1, Integer.MAX_VALUE,
+		delayOnDeath = config.getInt("delayOnDeath", "grace_periods", 200, -1, Integer.MAX_VALUE,
 				"The delay / grace period, in ticks, until a recently respawned player can be poisoned by rain. -1 does nothing.");
+		delayOnSleep = config.getInt("delayOnSleep", "grace_periods", -1, -1, Integer.MAX_VALUE,
+				"The delay / grace period, in ticks, until a player that has recently woken up can be poisoned by rain. -1 does nothing.");
+		delayOnDeathMessage = config.getBoolean("delayOnDeathMessage", "grace_periods", false, "Whether to inform the player about the grace period that follows a respawn.");
+		delayOnSpawnMessage = config.getBoolean("delayOnSpawnMessage", "grace_periods", false, "Whether to inform the player about the grace period that follows their first spawn.");
+		delayOnSleepMessage = config.getBoolean("delayOnSleepMessage", "grace_periods", false, "Whether to inform the player about the grace period that occurs after waking up.");
 		checkTimeDivisor = config.getInt("checkTimeDivisor", "general", 5, 1, Integer.MAX_VALUE,
 				"ToxicRain checks whether the player should be poisoned once every xth tick. The performance impact of ToxicRain scales inversely with this value.");
 
@@ -82,29 +89,17 @@ public class ConfigManager {
 		enableCommand =
 				config.getBoolean("enableCommand", "command", true, "Whether to enable the /toxicrain command or not.");
 
-		rainColor = getColor(config.getString("rainColor", "client", "",
+		rainColor = getColor(config.getString("rainColor", "client", "#586100",
 				"The color of rain. Vanilla is #4667c3. #586100 is a suitable green-brownish color. Leave empty to disable."));
-		rainDropsColor = getColor(config.getString("rainDropsColor", "client", "",
+		rainDropsColor = getColor(config.getString("rainDropsColor", "client", "#586100",
 				"The color of rain that hits the ground. Vanilla is #4667c3. #586100 is a suitable green-brownish color. Leave empty to disable."));
-		snowColor = getColor(config.getString("snowColor", "client", "",
+		snowColor = getColor(config.getString("snowColor", "client", "#586100",
 				"The color of rain that hits the ground. Vanilla is #ffffff. #586100 is a suitable green-brownish color. Leave empty to disable."));
 
 		enableConfigGui = config.getBoolean("enableConfigGui", "client", true,
 				"Whether to enable the in-game configuration screen or not.");
 		if (config.hasChanged()) {
 			config.save();
-		}
-
-		if (rainColor != null || rainDropsColor != null || snowColor != null) {
-			if (ClientEventHandler.instance == null) {
-				ClientEventHandler.instance = new ClientEventHandler();
-				MinecraftForge.EVENT_BUS.register(ClientEventHandler.instance);
-			}
-		} else {
-			if (ClientEventHandler.instance != null) {
-				MinecraftForge.EVENT_BUS.unregister(ClientEventHandler.instance);
-				ClientEventHandler.instance = null;
-			}
 		}
 	}
 
