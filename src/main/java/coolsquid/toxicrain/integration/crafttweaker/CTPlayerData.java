@@ -49,7 +49,7 @@ public class CTPlayerData {
 			actualPlayer.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(ticks);
 		} else {
 			CraftTweakerAPI.getLogger().logWarning(
-					"Tried to access \"toxicRain.delay\", which is not accessible on the client. This is unlikely to cause any major issues, unless you rely on it to execute important client-side logic. You may nonetheless want to wrap the relevant script section in an if (!player.world.remote) block.");
+					"Tried to access \"toxicRain.delay\", which is not accessible in client worlds. This is unlikely to cause any major issues, unless you rely on it to execute important client-side logic. You may nonetheless want to wrap the relevant script section in an \"if (!player.world.remote) {}\" block.");
 		}
 	}
 
@@ -70,7 +70,7 @@ public class CTPlayerData {
 			return actualPlayer.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).getDelay();
 		}
 		CraftTweakerAPI.getLogger().logWarning(
-				"Tried to access \"toxicRain.delay\", which is not accessible on the client. This is unlikely to cause any major issues, unless you rely on it to execute important client-side logic. You may nonetheless want to wrap the relevant script section in an if (!player.world.remote) block. Returning 0.");
+				"Tried to access \"toxicRain.delay\", which is not accessible in client worlds. This is unlikely to cause any major issues, unless you rely on it to execute important client-side logic. You may nonetheless want to wrap the relevant script section in an \"if (!player.world.remote) {}\" block.");
 		return 0;
 	}
 }
