@@ -73,7 +73,7 @@ public class ConfigManager {
 		duration = config.getInt("duration", "effect", 200, 1, 12000,
 				"The duration of the poison effect, in ticks (1/20th second).");
 		amplifier = config.getInt("amplifier", "effect", 0, 0, 10,
-				"The amplifier of the effect. Has no effect with the standard poison effect (blame Mojang).");
+				"The amplifier of the effect.");
 		particles =
 				config.getBoolean("particles", "effect", true, "Whether the potion should come with particles or not.");
 
