@@ -22,12 +22,12 @@ public class PacketToxicityUpdate implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		toxicRain = buf.readBoolean();
+		this.toxicRain = buf.readBoolean();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeBoolean(toxicRain);
+		buf.writeBoolean(this.toxicRain);
 	}
 
 	public static class Handler implements IMessageHandler<PacketToxicityUpdate, IMessage> {

@@ -12,7 +12,7 @@ import stanhebben.zenscript.annotations.ZenSetter;
 
 /**
  * The actual ToxicRain CT integration.
- * 
+ *
  * Can be retrieved through {@link CTPlayerExtension#getToxicRain(IPlayer)}.
  */
 @ZenRegister
@@ -30,11 +30,11 @@ public class CTPlayerData {
 	 * Can be set to -1 to indefinitely prevent rain from poisoning the specified
 	 * player. Can be set to 0 to make the specified player susceptible to toxic
 	 * rain again.
-	 * 
+	 *
 	 * Must be either -1, 0 or a positive integer.
-	 * 
+	 *
 	 * Should be wrapped in an {@code if (!player.world.remote)} block.
-	 * 
+	 *
 	 * @see {@link #getDelay()}
 	 */
 	@ZenSetter("delay")
@@ -56,11 +56,11 @@ public class CTPlayerData {
 	/**
 	 * The delay, in ticks, until the specified player can be poisoned by rain
 	 * again.
-	 * 
+	 *
 	 * Can be -1, 0 or a positive integer.
-	 * 
+	 *
 	 * Should be wrapped in an {@code if (!player.world.remote)} block.
-	 * 
+	 *
 	 * @see {@link #setDelay(int)}
 	 */
 	@ZenGetter("delay")

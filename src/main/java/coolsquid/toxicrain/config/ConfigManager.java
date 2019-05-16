@@ -54,17 +54,22 @@ public class ConfigManager {
 				"If true, being exposed to snow will have the same effect as being exposed to rain.");
 		toxicWater = config.getBoolean("toxicWater", "general", false,
 				"If true, touching water blocks will have the same effect as being exposed to rain.");
-		minMoonFullness = config.getFloat("minFullness", "general.moon", 0, 0, 1, "Rain will only be toxic when the moon is at least this full.");
-		maxMoonFullness = config.getFloat("maxFullness", "general.moon", 1, 0, 1, "Rain will only be toxic when the moon is at most this full.");
+		minMoonFullness = config.getFloat("minFullness", "general.moon", 0, 0, 1,
+				"Rain will only be toxic when the moon is at least this full.");
+		maxMoonFullness = config.getFloat("maxFullness", "general.moon", 1, 0, 1,
+				"Rain will only be toxic when the moon is at most this full.");
 		delayOnSpawn = config.getInt("delayOnSpawn", "grace_periods", 600, -1, Integer.MAX_VALUE,
 				"The delay / grace period, in ticks, until a recently spawned player can be poisoned by rain. -1 does nothing.");
 		delayOnDeath = config.getInt("delayOnDeath", "grace_periods", 200, -1, Integer.MAX_VALUE,
 				"The delay / grace period, in ticks, until a recently respawned player can be poisoned by rain. -1 does nothing.");
 		delayOnSleep = config.getInt("delayOnSleep", "grace_periods", -1, -1, Integer.MAX_VALUE,
 				"The delay / grace period, in ticks, until a player that has recently woken up can be poisoned by rain. -1 does nothing.");
-		delayOnDeathMessage = config.getBoolean("delayOnDeathMessage", "grace_periods", false, "Whether to inform the player about the grace period that follows a respawn.");
-		delayOnSpawnMessage = config.getBoolean("delayOnSpawnMessage", "grace_periods", false, "Whether to inform the player about the grace period that follows their first spawn.");
-		delayOnSleepMessage = config.getBoolean("delayOnSleepMessage", "grace_periods", false, "Whether to inform the player about the grace period that occurs after waking up.");
+		delayOnDeathMessage = config.getBoolean("delayOnDeathMessage", "grace_periods", false,
+				"Whether to inform the player about the grace period that follows a respawn.");
+		delayOnSpawnMessage = config.getBoolean("delayOnSpawnMessage", "grace_periods", false,
+				"Whether to inform the player about the grace period that follows their first spawn.");
+		delayOnSleepMessage = config.getBoolean("delayOnSleepMessage", "grace_periods", false,
+				"Whether to inform the player about the grace period that occurs after waking up.");
 		checkTimeDivisor = config.getInt("checkTimeDivisor", "general", 5, 1, Integer.MAX_VALUE,
 				"ToxicRain checks whether the player should be poisoned once every xth tick. The performance impact of ToxicRain scales inversely with this value.");
 
@@ -72,8 +77,7 @@ public class ConfigManager {
 				"The potion effect to apply to players when exposed to rain.");
 		duration = config.getInt("duration", "effect", 200, 1, 12000,
 				"The duration of the poison effect, in ticks (1/20th second).");
-		amplifier = config.getInt("amplifier", "effect", 0, 0, 10,
-				"The amplifier of the effect.");
+		amplifier = config.getInt("amplifier", "effect", 0, 0, 10, "The amplifier of the effect.");
 		particles =
 				config.getBoolean("particles", "effect", true, "Whether the potion should come with particles or not.");
 

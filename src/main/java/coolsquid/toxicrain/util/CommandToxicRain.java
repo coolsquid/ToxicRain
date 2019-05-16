@@ -39,13 +39,13 @@ public class CommandToxicRain extends CommandBase {
 		} else {
 			switch (args[0]) {
 			case "delay":
-				delay(args, sender);
+				this.delay(args, sender);
 				break;
 			case "enable":
-				enable(args, sender);
+				this.enable(args, sender);
 				break;
 			case "disable":
-				disable(args, sender);
+				this.disable(args, sender);
 				break;
 			default:
 				throw new WrongUsageException("toxicrain.command.error.unknownsubcommand", args[0]);

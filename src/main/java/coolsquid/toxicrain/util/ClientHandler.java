@@ -101,25 +101,25 @@ public class ClientHandler {
 				if (originalRainDropsFactory == null) {
 					originalRainDropsFactory = particleTypes.get(EnumParticleTypes.WATER_DROP.getParticleID());
 				}
-				Minecraft.getMinecraft().effectRenderer
-				.registerParticle(EnumParticleTypes.WATER_DROP.getParticleID(), (particleID, worldIn,
-						xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, p_178902_15_) -> {
-					Particle particle = originalRainDropsFactory.createParticle(particleID, worldIn,
-							xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, p_178902_15_);
-					particle.setRBGColorF(rainRed, rainGreen, rainBlue);
-					return particle;
-				});
+				Minecraft.getMinecraft().effectRenderer.registerParticle(EnumParticleTypes.WATER_DROP.getParticleID(),
+						(particleID, worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn,
+								p_178902_15_) -> {
+							Particle particle = originalRainDropsFactory.createParticle(particleID, worldIn, xCoordIn,
+									yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, p_178902_15_);
+							particle.setRBGColorF(rainRed, rainGreen, rainBlue);
+							return particle;
+						});
 				if (originalWaterSplashFactory == null) {
 					originalWaterSplashFactory = particleTypes.get(EnumParticleTypes.WATER_SPLASH.getParticleID());
 				}
-				Minecraft.getMinecraft().effectRenderer
-				.registerParticle(EnumParticleTypes.WATER_SPLASH.getParticleID(), (particleID, worldIn,
-						xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, p_178902_15_) -> {
-					Particle particle = originalWaterSplashFactory.createParticle(particleID, worldIn,
-							xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, p_178902_15_);
-					particle.setRBGColorF(0, 52 / 255F, 204 / 255F);
-					return particle;
-				});
+				Minecraft.getMinecraft().effectRenderer.registerParticle(EnumParticleTypes.WATER_SPLASH.getParticleID(),
+						(particleID, worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn,
+								p_178902_15_) -> {
+							Particle particle = originalWaterSplashFactory.createParticle(particleID, worldIn, xCoordIn,
+									yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, p_178902_15_);
+							particle.setRBGColorF(0, 52 / 255F, 204 / 255F);
+							return particle;
+						});
 			} else {
 				if (originalRainDropsFactory != null) {
 					Minecraft.getMinecraft().effectRenderer

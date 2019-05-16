@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 /**
  * Lets other mods, the CraftTweaker integration and the /toxicrain command
  * protect specific players from toxic rain, either temporarily or indefinitely.
- * 
+ *
  * The capability is not available in {@link WorldClient}s, as the underlying
  * logic is not executed on the client, in order to limit CPU usage.
  */
@@ -28,11 +28,11 @@ public interface IPlayerData {
 	 * Can be set to -1 to indefinitely prevent rain from poisoning the specified
 	 * player. Can be set to 0 to make the specified player susceptible to toxic
 	 * rain again.
-	 * 
+	 *
 	 * Must be either -1, 0 or a positive integer.
-	 * 
+	 *
 	 * @see {@link #getDelay()}
-	 * 
+	 *
 	 * @throws IllegalArgumentException If
 	 *                                  {@code ticks < -1 || (ticks < 0 && ticks != -1)}.
 	 */
@@ -41,9 +41,9 @@ public interface IPlayerData {
 	/**
 	 * The delay, in ticks, until the specified player can be poisoned by rain
 	 * again.
-	 * 
+	 *
 	 * Can be -1, 0 or a positive integer.
-	 * 
+	 *
 	 * @see {@link #setDelay(int)}
 	 */
 	public int getDelay();
@@ -52,7 +52,7 @@ public interface IPlayerData {
 	 * Whether this is the first time the player has spawned/logged in. Used to
 	 * apply the spawn delay. Primarily intended to be used within the
 	 * {@link PlayerLoggedInEvent}.
-	 * 
+	 *
 	 * @return Whether this is the first time the player has spawned/logged in.
 	 * @see #setFirstSpawn(boolean)
 	 */
@@ -60,11 +60,11 @@ public interface IPlayerData {
 
 	/**
 	 * For internal use only!
-	 * 
+	 *
 	 * Implementations should assume that this is the first spawn until this method
 	 * is called. The method is automatically called if the capability is loaded
 	 * from NBT data, which implies that the player has been in the world before.
-	 * 
+	 *
 	 * @see #isFirstSpawn()
 	 */
 	public void setFirstSpawn(boolean firstSpawn);
@@ -72,7 +72,7 @@ public interface IPlayerData {
 	/**
 	 * Whether the server has told the client that the player can experience toxic
 	 * rain. This prevents the server from sending unnecessary packets.
-	 * 
+	 *
 	 * @return Whether the server has told the client that the player can experience
 	 *         toxic rain.
 	 * @see #areClientTweaksActive()
@@ -83,7 +83,7 @@ public interface IPlayerData {
 	 * Should be called whenever
 	 * {@link PacketManager#sendToxicityUpdate(boolean, net.minecraft.entity.player.EntityPlayerMP)}
 	 * is invoked.
-	 * 
+	 *
 	 * @see #areClientTweaksActive()
 	 */
 	public void setClientTweaksActive(boolean clientTweaksActive);
