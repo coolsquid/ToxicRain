@@ -119,20 +119,20 @@ public class ModEventHandler {
 			if (!(ConfigManager.enableAntidote && event.player.isPotionActive(ToxicRain.antidote))
 					&& ConfigManager.isPoisonousDimension(event.player.world.provider.getDimension())) {
 				float moonPhaseFactor = event.player.world.getCurrentMoonPhaseFactor();
-				if (moonPhaseFactor >= ConfigManager.minMoonFullness
-						&& moonPhaseFactor <= ConfigManager.maxMoonFullness) {
+				long time = event.player.world.getWorldTime();
+				if (moonPhaseFactor >= ConfigManager.minMoonFullness && moonPhaseFactor <= ConfigManager.maxMoonFullness
+						&& time >= ConfigManager.minTime
+						&& time <= ConfigManager.maxTime) {
 					if (event.player.isInWater() && ConfigManager.toxicWater) {
 						event.player.addPotionEffect(new PotionEffect(ToxicRain.effect, ConfigManager.duration,
 								ConfigManager.amplifier, false, ConfigManager.particles));
 					} else if (event.player.world.isRaining()
-							&& event.player.world.canSeeSky(event.player.getPosition())
-							&& event.player.world.getPrecipitationHeight(event.player.getPosition())
-									.getY() <= event.player.posY) {
+							&& event.player.world.canSeeSky(event.player.getPosition()) && event.player.world
+									.getPrecipitationHeight(event.player.getPosition()).getY() <= event.player.posY) {
 						Biome biome = event.player.world.getBiome(event.player.getPosition());
 						if (biome.canRain() || biome.getEnableSnow() && ConfigManager.toxicSnow) {
 							event.player.addPotionEffect(new PotionEffect(ToxicRain.effect, ConfigManager.duration,
 									ConfigManager.amplifier, false, ConfigManager.particles));
-
 						}
 					}
 					if (!cap.areClientTweaksActive()) {

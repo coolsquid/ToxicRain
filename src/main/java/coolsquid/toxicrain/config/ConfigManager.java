@@ -37,8 +37,8 @@ public class ConfigManager {
 	public static Color rainColor, rainDropsColor;
 	public static Color snowColor;
 
-	public static float minMoonFullness;
-	public static float maxMoonFullness;
+	public static float minMoonFullness, maxMoonFullness;
+	public static int minTime, maxTime;
 
 	public static boolean enableConfigGui;
 
@@ -58,6 +58,11 @@ public class ConfigManager {
 				"Rain will only be toxic when the moon is at least this full.");
 		maxMoonFullness = config.getFloat("maxFullness", "general.moon", 1, 0, 1,
 				"Rain will only be toxic when the moon is at most this full.");
+		minTime = config.getInt("minTime", "general.time", 0, 0, 23999, "Rain will only be toxic when the in-game time is between minTime and maxTime.");
+		maxTime = config.getInt("maxTime", "general.time", 23999, 0, 23999, "Rain will only be toxic when the in-game time is between minTime and maxTime.");
+		checkTimeDivisor = config.getInt("checkTimeDivisor", "general", 5, 1, Integer.MAX_VALUE,
+				"ToxicRain checks whether the player should be poisoned once every xth tick. The performance impact of ToxicRain scales inversely with this value.");
+
 		delayOnSpawn = config.getInt("delayOnSpawn", "grace_periods", 600, -1, Integer.MAX_VALUE,
 				"The delay / grace period, in ticks, until a recently spawned player can be poisoned by rain. -1 does nothing.");
 		delayOnDeath = config.getInt("delayOnDeath", "grace_periods", 200, -1, Integer.MAX_VALUE,
@@ -70,8 +75,6 @@ public class ConfigManager {
 				"Whether to inform the player about the grace period that follows their first spawn.");
 		delayOnSleepMessage = config.getBoolean("delayOnSleepMessage", "grace_periods", false,
 				"Whether to inform the player about the grace period that occurs after waking up.");
-		checkTimeDivisor = config.getInt("checkTimeDivisor", "general", 5, 1, Integer.MAX_VALUE,
-				"ToxicRain checks whether the player should be poisoned once every xth tick. The performance impact of ToxicRain scales inversely with this value.");
 
 		effect = config.getString("effect", "effect", "minecraft:poison",
 				"The potion effect to apply to players when exposed to rain.");
