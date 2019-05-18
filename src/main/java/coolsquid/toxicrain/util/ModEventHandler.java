@@ -127,7 +127,7 @@ public class ModEventHandler {
 					} else if (event.player.world.isRaining()
 							&& event.player.world.canSeeSky(event.player.getPosition())
 							&& event.player.world.getPrecipitationHeight(event.player.getPosition())
-									.getY() <= event.player.getPosition().getY()) {
+									.getY() <= event.player.posY) {
 						Biome biome = event.player.world.getBiome(event.player.getPosition());
 						if (biome.canRain() || biome.getEnableSnow() && ConfigManager.toxicSnow) {
 							event.player.addPotionEffect(new PotionEffect(ToxicRain.effect, ConfigManager.duration,
