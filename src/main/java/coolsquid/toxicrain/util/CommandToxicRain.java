@@ -103,9 +103,19 @@ public class CommandToxicRain extends CommandBase {
 				throw new WrongUsageException("toxicrain.command.error.baddelay", delay);
 			}
 			player.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(delay);
-			sender.sendMessage(new TextComponentString("<ToxicRain> ")
-					.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
-							"toxicrain.command.delay.success", player.getDisplayName().getFormattedText(), args[1])));
+			if (delay == 0) {
+				sender.sendMessage(new TextComponentString("<ToxicRain> ")
+						.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
+								"toxicrain.command.enable.success", player.getDisplayName().getUnformattedText())));
+			} else if (delay == -1) {
+				sender.sendMessage(new TextComponentString("<ToxicRain> ")
+						.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
+								"toxicrain.command.disable.success", player.getDisplayName().getUnformattedText())));
+			} else {
+				sender.sendMessage(new TextComponentString("<ToxicRain> ")
+						.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
+								"toxicrain.command.delay.success", player.getDisplayName().getFormattedText(), args[1])));
+			}
 		} else if (args.length == 2) {
 			if (sender.getCommandSenderEntity() instanceof EntityPlayerMP) {
 				int delay = parseInt(args[1]);
@@ -113,10 +123,19 @@ public class CommandToxicRain extends CommandBase {
 					throw new WrongUsageException("toxicrain.command.error.baddelay", delay);
 				}
 				sender.getCommandSenderEntity().getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(delay);
-				sender.sendMessage(
-						new TextComponentString("<ToxicRain> ").setStyle(new Style().setColor(TextFormatting.BLUE))
-								.appendSibling(new TextComponentTranslation("toxicrain.command.delay.success",
-										sender.getDisplayName().getFormattedText(), args[1])));
+				if (delay == 0) {
+					sender.sendMessage(new TextComponentString("<ToxicRain> ")
+							.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
+									"toxicrain.command.enable.success", sender.getDisplayName().getUnformattedText())));
+				} else if (delay == -1) {
+					sender.sendMessage(new TextComponentString("<ToxicRain> ")
+							.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
+									"toxicrain.command.disable.success", sender.getDisplayName().getUnformattedText())));
+				} else {
+					sender.sendMessage(new TextComponentString("<ToxicRain> ")
+							.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
+									"toxicrain.command.delay.success", sender.getDisplayName().getFormattedText(), args[1])));
+				}
 			} else {
 				throw new WrongUsageException("toxicrain.command.error.sendernotplayer", sender.getName());
 			}
