@@ -34,7 +34,7 @@ public class CommandToxicRain extends CommandBase {
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if (args.length < 1) {
 			sender.sendMessage(
-					new TextComponentString("<ToxicRain> ").setStyle(new Style().setColor(TextFormatting.BLUE))
+					new TextComponentString("[ToxicRain] ").setStyle(new Style().setColor(TextFormatting.BLUE))
 							.appendSibling(new TextComponentTranslation("toxicrain.command.usage")));
 		} else {
 			switch (args[0]) {
@@ -57,13 +57,13 @@ public class CommandToxicRain extends CommandBase {
 		if (args.length == 2) {
 			EntityPlayerMP player = getPlayer(sender.getServer(), sender, args[1]);
 			player.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(0);
-			sender.sendMessage(new TextComponentString("<ToxicRain> ")
+			sender.sendMessage(new TextComponentString("[ToxicRain] ")
 					.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
 							"toxicrain.command.enable.success", player.getDisplayNameString())));
 		} else if (args.length == 1) {
 			if (sender.getCommandSenderEntity() instanceof EntityPlayerMP) {
 				sender.getCommandSenderEntity().getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(0);
-				sender.sendMessage(new TextComponentString("<ToxicRain> ")
+				sender.sendMessage(new TextComponentString("[ToxicRain] ")
 						.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
 								"toxicrain.command.enable.success", sender.getDisplayName().getUnformattedText())));
 			} else {
@@ -78,13 +78,13 @@ public class CommandToxicRain extends CommandBase {
 		if (args.length == 2) {
 			EntityPlayerMP player = getPlayer(sender.getServer(), sender, args[1]);
 			player.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(-1);
-			sender.sendMessage(new TextComponentString("<ToxicRain> ")
+			sender.sendMessage(new TextComponentString("[ToxicRain] ")
 					.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
 							"toxicrain.command.disable.success", player.getDisplayNameString())));
 		} else if (args.length == 1) {
 			if (sender.getCommandSenderEntity() instanceof EntityPlayerMP) {
 				sender.getCommandSenderEntity().getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(-1);
-				sender.sendMessage(new TextComponentString("<ToxicRain> ")
+				sender.sendMessage(new TextComponentString("[ToxicRain] ")
 						.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
 								"toxicrain.command.disable.success", sender.getDisplayName().getUnformattedText())));
 			} else {
@@ -104,15 +104,15 @@ public class CommandToxicRain extends CommandBase {
 			}
 			player.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(delay);
 			if (delay == 0) {
-				sender.sendMessage(new TextComponentString("<ToxicRain> ")
+				sender.sendMessage(new TextComponentString("[ToxicRain] ")
 						.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
 								"toxicrain.command.enable.success", player.getDisplayName().getUnformattedText())));
 			} else if (delay == -1) {
-				sender.sendMessage(new TextComponentString("<ToxicRain> ")
+				sender.sendMessage(new TextComponentString("[ToxicRain] ")
 						.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
 								"toxicrain.command.disable.success", player.getDisplayName().getUnformattedText())));
 			} else {
-				sender.sendMessage(new TextComponentString("<ToxicRain> ")
+				sender.sendMessage(new TextComponentString("[ToxicRain] ")
 						.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
 								"toxicrain.command.delay.success", player.getDisplayName().getFormattedText(), args[1])));
 			}
@@ -124,15 +124,15 @@ public class CommandToxicRain extends CommandBase {
 				}
 				sender.getCommandSenderEntity().getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(delay);
 				if (delay == 0) {
-					sender.sendMessage(new TextComponentString("<ToxicRain> ")
+					sender.sendMessage(new TextComponentString("[ToxicRain] ")
 							.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
 									"toxicrain.command.enable.success", sender.getDisplayName().getUnformattedText())));
 				} else if (delay == -1) {
-					sender.sendMessage(new TextComponentString("<ToxicRain> ")
+					sender.sendMessage(new TextComponentString("[ToxicRain] ")
 							.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
 									"toxicrain.command.disable.success", sender.getDisplayName().getUnformattedText())));
 				} else {
-					sender.sendMessage(new TextComponentString("<ToxicRain> ")
+					sender.sendMessage(new TextComponentString("[ToxicRain] ")
 							.setStyle(new Style().setColor(TextFormatting.BLUE)).appendSibling(new TextComponentTranslation(
 									"toxicrain.command.delay.success", sender.getDisplayName().getFormattedText(), args[1])));
 				}
