@@ -39,6 +39,7 @@ public class ConfigManager {
 
 	public static float minMoonFullness, maxMoonFullness;
 	public static int minTime, maxTime;
+	public static float minRainingStrength, minThunderingStrength;
 
 	public static boolean enableConfigGui;
 
@@ -54,14 +55,19 @@ public class ConfigManager {
 				"If true, being exposed to snow will have the same effect as being exposed to rain.");
 		toxicWater = config.getBoolean("toxicWater", "general", false,
 				"If true, touching water blocks will have the same effect as being exposed to rain.");
+		checkTimeDivisor = config.getInt("checkTimeDivisor", "general", 5, 1, Integer.MAX_VALUE,
+				"ToxicRain checks whether the player should be poisoned once every xth tick. The performance impact of ToxicRain scales inversely with this value.");
+
 		minMoonFullness = config.getFloat("minFullness", "general.moon", 0, 0, 1,
 				"Rain will only be toxic when the moon is at least this full.");
 		maxMoonFullness = config.getFloat("maxFullness", "general.moon", 1, 0, 1,
 				"Rain will only be toxic when the moon is at most this full.");
-		minTime = config.getInt("minTime", "general.time", 0, 0, 23999, "Rain will only be toxic when the in-game time is between minTime and maxTime.");
-		maxTime = config.getInt("maxTime", "general.time", 23999, 0, 23999, "Rain will only be toxic when the in-game time is between minTime and maxTime.");
-		checkTimeDivisor = config.getInt("checkTimeDivisor", "general", 5, 1, Integer.MAX_VALUE,
-				"ToxicRain checks whether the player should be poisoned once every xth tick. The performance impact of ToxicRain scales inversely with this value.");
+		minTime = config.getInt("minTime", "general.time", 0, 0, 23999,
+				"Rain will only be toxic when the in-game time is between minTime and maxTime.");
+		maxTime = config.getInt("maxTime", "general.time", 23999, 0, 23999,
+				"Rain will only be toxic when the in-game time is between minTime and maxTime.");
+		minRainingStrength = config.getFloat("minRainingStrength", "general", 0, 0, 1, "");
+		minThunderingStrength = config.getFloat("minThunderingStrength", "general", 0, 0, 1, "");
 
 		delayOnSpawn = config.getInt("delayOnSpawn", "grace_periods", 600, -1, Integer.MAX_VALUE,
 				"The delay / grace period, in ticks, until a recently spawned player can be poisoned by rain. -1 does nothing.");

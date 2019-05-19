@@ -121,23 +121,34 @@ public class ModEventHandler {
 				float moonPhaseFactor = event.player.world.getCurrentMoonPhaseFactor();
 				long time = event.player.world.getWorldTime();
 				if (moonPhaseFactor >= ConfigManager.minMoonFullness && moonPhaseFactor <= ConfigManager.maxMoonFullness
-						&& time >= ConfigManager.minTime
-						&& time <= ConfigManager.maxTime) {
+						&& time >= ConfigManager.minTime && time <= ConfigManager.maxTime) {
+					boolean rainAndThunderConditions = event.player.world.rainingStrength >= ConfigManager.minRainingStrength
+							&& event.player.world.thunderingStrength >= ConfigManager.minThunderingStrength;
 					if (event.player.isInWater() && ConfigManager.toxicWater) {
 						event.player.addPotionEffect(new PotionEffect(ToxicRain.effect, ConfigManager.duration,
 								ConfigManager.amplifier, false, ConfigManager.particles));
-					} else if (event.player.world.isRaining()
-							&& event.player.world.canSeeSky(event.player.getPosition()) && event.player.world
-									.getPrecipitationHeight(event.player.getPosition()).getY() <= event.player.posY) {
-						Biome biome = event.player.world.getBiome(event.player.getPosition());
-						if (biome.canRain() || biome.getEnableSnow() && ConfigManager.toxicSnow) {
-							event.player.addPotionEffect(new PotionEffect(ToxicRain.effect, ConfigManager.duration,
-									ConfigManager.amplifier, false, ConfigManager.particles));
+					} else {
+						if (event.player.world.isRaining() && rainAndThunderConditions
+								&& event.player.world.canSeeSky(event.player.getPosition())
+								&& event.player.world.getPrecipitationHeight(event.player.getPosition())
+										.getY() <= event.player.posY) {
+							Biome biome = event.player.world.getBiome(event.player.getPosition());
+							if (biome.canRain() || biome.getEnableSnow() && ConfigManager.toxicSnow) {
+								event.player.addPotionEffect(new PotionEffect(ToxicRain.effect, ConfigManager.duration,
+										ConfigManager.amplifier, false, ConfigManager.particles));
+							}
 						}
 					}
-					if (!cap.areClientTweaksActive()) {
-						PacketManager.sendToxicityUpdate(true, (EntityPlayerMP) event.player);
-						cap.setClientTweaksActive(true);
+					if (rainAndThunderConditions) {
+						if (!cap.areClientTweaksActive()) {
+							PacketManager.sendToxicityUpdate(true, (EntityPlayerMP) event.player);
+							cap.setClientTweaksActive(true);
+						}
+					} else {
+						if (cap.areClientTweaksActive()) {
+							PacketManager.sendToxicityUpdate(false, (EntityPlayerMP) event.player);
+							cap.setClientTweaksActive(false);
+						}
 					}
 				} else {
 					if (cap.areClientTweaksActive()) {
