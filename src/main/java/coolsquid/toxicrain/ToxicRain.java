@@ -71,7 +71,7 @@ public class ToxicRain {
 	@Mod.EventHandler
 	public void onPostInit(FMLPostInitializationEvent event) {
 		effect = Preconditions.checkNotNull(Potion.getPotionFromResourceLocation(ConfigManager.effect),
-				"The effect cannot be null");
+				"Could not find potion effect \"" + ConfigManager.effect + "\"");
 	}
 
 	@Mod.EventHandler
