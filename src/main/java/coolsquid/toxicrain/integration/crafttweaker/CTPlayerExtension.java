@@ -1,6 +1,7 @@
 package coolsquid.toxicrain.integration.crafttweaker;
 
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.player.IPlayer;
 import stanhebben.zenscript.annotations.ZenExpansion;
 import stanhebben.zenscript.annotations.ZenGetter;
@@ -18,9 +19,6 @@ public class CTPlayerExtension {
 	 */
 	@ZenGetter("toxicRain")
 	public static CTPlayerData getToxicRain(IPlayer player) {
-		if (player == null) {
-			throw new IllegalArgumentException("\"player\" cannot be null!");
-		}
-		return new CTPlayerData(player);
+		return new CTPlayerData(CraftTweakerMC.getPlayer(player));
 	}
 }

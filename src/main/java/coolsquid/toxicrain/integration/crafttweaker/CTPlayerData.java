@@ -19,9 +19,9 @@ import stanhebben.zenscript.annotations.ZenSetter;
 @ZenClass("mods.toxicrain.PlayerData")
 public class CTPlayerData {
 
-	private final IPlayer player;
+	private final EntityPlayer player;
 
-	protected CTPlayerData(IPlayer player) {
+	protected CTPlayerData(EntityPlayer player) {
 		this.player = player;
 	}
 
@@ -44,9 +44,8 @@ public class CTPlayerData {
 					+ ticks + " to -1.");
 			ticks = -1;
 		}
-		EntityPlayer actualPlayer = (EntityPlayer) this.player.getInternal();
-		if (!actualPlayer.world.isRemote) {
-			actualPlayer.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(ticks);
+		if (!this.player.world.isRemote) {
+			this.player.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).setDelay(ticks);
 		} else {
 			CraftTweakerAPI.getLogger().logWarning(
 					"Tried to access \"toxicRain.delay\", which is not accessible in client worlds. This is unlikely to cause any major issues, unless you rely on it to execute important client-side logic. You may nonetheless want to wrap the relevant script section in an \"if (!player.world.remote) {}\" block.");
@@ -65,9 +64,8 @@ public class CTPlayerData {
 	 */
 	@ZenGetter("delay")
 	public int getDelay() {
-		EntityPlayer actualPlayer = (EntityPlayer) this.player.getInternal();
-		if (!actualPlayer.world.isRemote) {
-			return actualPlayer.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).getDelay();
+		if (!this.player.world.isRemote) {
+			return this.player.getCapability(IPlayerData.CAPABILITY, EnumFacing.NORTH).getDelay();
 		}
 		CraftTweakerAPI.getLogger().logWarning(
 				"Tried to access \"toxicRain.delay\", which is not accessible in client worlds. This is unlikely to cause any major issues, unless you rely on it to execute important client-side logic. You may nonetheless want to wrap the relevant script section in an \"if (!player.world.remote) {}\" block.");
