@@ -65,7 +65,8 @@ public class ConfigManager {
 				"ToxicRain checks whether the player should be poisoned once every xth tick. The performance impact of ToxicRain scales inversely with this value.");
 
 		Property timeRangesProperty = config.get("general", "timeRanges", new String[0]);
-		timeRangesProperty.setComment("Rain will only be toxic when the game time within one of these time ranges. Each list entry should be a number (123) or a range (0-123). The numbers must be between 0 and 23999.");
+		timeRangesProperty.setComment(
+				"Rain will only be toxic when the game time within one of these time ranges. Each list entry should be a number (123) or a range (0-123). The numbers must be between 0 and 23999.");
 		timeRangesProperty.setValidationPattern(Pattern.compile("^(\\d+-\\d+|\\d+)$"));
 		if (timeRangesProperty.getStringList().length == 0) {
 			timeRanges = null;
