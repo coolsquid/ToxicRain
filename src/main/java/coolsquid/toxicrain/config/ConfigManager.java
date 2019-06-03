@@ -51,7 +51,7 @@ public class ConfigManager {
 
 	public static void load() {
 		Configuration config = new Configuration(new File("config/ToxicRain.cfg"), ToxicRain.VERSION);
-		enableAntidote = config.getBoolean("enabled", "antidote", true, "Whether to enable the antidote potion.");
+		enableAntidote = config.getBoolean("enabled", "antidote", false, "Whether to enable the antidote potion.");
 		antidoteDuration = config.getInt("duration", "antidote", 3600, 1, 36000,
 				"The duration of the antidote effect, in ticks (1/20th seconds).");
 		longAntidoteDuration = config.getInt("longDuration", "antidote", 9600, 1, 96000,
