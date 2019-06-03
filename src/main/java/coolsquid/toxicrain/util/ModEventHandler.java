@@ -8,7 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.Style;
@@ -123,16 +122,14 @@ public class ModEventHandler {
 				boolean rainAndThunderConditions = ConfigManager.areRainAndThunderValid(
 						event.player.world.rainingStrength, event.player.world.getThunderStrength(1.0F));
 				if (event.player.isInWater() && ConfigManager.toxicWater) {
-					event.player.addPotionEffect(new PotionEffect(ToxicRain.effect, ConfigManager.duration,
-							ConfigManager.amplifier, false, ConfigManager.particles));
+					event.player.addPotionEffect(ConfigManager.createEffect());
 				} else {
 					if (rainAndThunderConditions && event.player.world.canSeeSky(event.player.getPosition())
 							&& event.player.world.getPrecipitationHeight(event.player.getPosition())
 									.getY() <= event.player.posY) {
 						Biome biome = event.player.world.getBiome(event.player.getPosition());
 						if (biome.canRain() || biome.getEnableSnow() && ConfigManager.toxicSnow) {
-							event.player.addPotionEffect(new PotionEffect(ToxicRain.effect, ConfigManager.duration,
-									ConfigManager.amplifier, false, ConfigManager.particles));
+							event.player.addPotionEffect(ConfigManager.createEffect());
 						}
 					}
 				}
@@ -164,6 +161,7 @@ public class ModEventHandler {
 				((ConfigGuiFactory.Gui) Minecraft.getMinecraft().currentScreen).config.save();
 			}
 			ConfigManager.load();
+			ConfigManager.setEffect();
 			if (Minecraft.getMinecraft().world != null) {
 				ClientHandler.newRainTexture = null;
 				ClientHandler.newSnowTexture = null;

@@ -1,7 +1,5 @@
 package coolsquid.toxicrain;
 
-import com.google.common.base.Preconditions;
-
 import coolsquid.toxicrain.config.ConfigManager;
 import coolsquid.toxicrain.network.PacketManager;
 import coolsquid.toxicrain.util.CommandToxicRain;
@@ -38,8 +36,6 @@ public class ToxicRain {
 	public static final String UPDATE_JSON =
 			"https://gist.githubusercontent.com/coolsquid/6b48d527776a66c644e1ce1b3c2776ae/raw/toxicrain.json";
 
-	public static Potion effect;
-
 	public static Potion antidote;
 	public static PotionType antidoteType;
 	public static PotionType longAntidoteType;
@@ -70,8 +66,7 @@ public class ToxicRain {
 
 	@Mod.EventHandler
 	public void onPostInit(FMLPostInitializationEvent event) {
-		effect = Preconditions.checkNotNull(Potion.getPotionFromResourceLocation(ConfigManager.effect),
-				"Could not find potion effect \"" + ConfigManager.effect + "\"");
+		ConfigManager.setEffect();
 	}
 
 	@Mod.EventHandler

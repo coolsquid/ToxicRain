@@ -4,9 +4,13 @@ import java.awt.Color;
 import java.io.File;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Preconditions;
+
 import coolsquid.toxicrain.ToxicRain;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
@@ -26,10 +30,12 @@ public class ConfigManager {
 	public static int antidoteDuration;
 	public static int longAntidoteDuration;
 
-	public static String effect;
+	public static String effectName;
 	public static int duration;
 	public static int amplifier;
-	public static boolean particles;
+	public static boolean ambient, particles;
+
+	public static Potion effect;
 
 	public static boolean isWhitelist;
 	public static IntSet blacklist;
@@ -112,13 +118,15 @@ public class ConfigManager {
 		delayOnSleepMessage = config.getBoolean("delayOnSleepMessage", "grace_periods", false,
 				"Whether to inform the player about the grace period that occurs after waking up.");
 
-		effect = config.getString("effect", "effect", "minecraft:poison",
+		effectName = config.getString("effect", "effect", "minecraft:poison",
 				"The potion effect to apply to players when exposed to rain.");
 		duration = config.getInt("duration", "effect", 200, 1, 12000,
 				"The duration of the poison effect, in ticks (1/20th second).");
 		amplifier = config.getInt("amplifier", "effect", 0, 0, 10, "The amplifier of the effect.");
+		ambient = config.getBoolean("ambient", "effect", false,
+				"Whether the effect is ambient (i.e. from a beacon) or not.");
 		particles =
-				config.getBoolean("particles", "effect", true, "Whether the potion should come with particles or not.");
+				config.getBoolean("particles", "effect", true, "Whether the effect should come with particles or not.");
 
 		isWhitelist = config.getBoolean("dimensionWhitelist", "blacklist", false,
 				"If true, 'dimensionList' operates as a whitelist instead of a blacklist.");
@@ -178,5 +186,15 @@ public class ConfigManager {
 
 	public static boolean isMoonPhaseValid(float moonPhaseFactor) {
 		return moonPhaseFactor >= minMoonFullness && moonPhaseFactor <= maxMoonFullness;
+	}
+
+	public static PotionEffect createEffect() {
+		return new PotionEffect(effect, duration, amplifier, ambient, particles);
+	}
+
+	public static void setEffect() {
+		ConfigManager.effect =
+				Preconditions.checkNotNull(Potion.getPotionFromResourceLocation(ConfigManager.effectName),
+						"Could not find potion effect \"" + ConfigManager.effectName + "\"");
 	}
 }
