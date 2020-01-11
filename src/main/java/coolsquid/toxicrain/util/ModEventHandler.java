@@ -117,6 +117,7 @@ public class ModEventHandler {
 			}
 			if (!(ConfigManager.enableAntidote && event.player.isPotionActive(ToxicRain.antidote))
 					&& ConfigManager.isPoisonousDimension(event.player.world.provider.getDimension())
+					&& ConfigManager.isPoisonousBiome(event.player.world.getBiome(event.player.getPosition()))
 					&& ConfigManager.isMoonPhaseValid(event.player.world.getCurrentMoonPhaseFactor())
 					&& ConfigManager.isTimeValid(event.player.world.getWorldTime())) {
 				boolean rainAndThunderConditions = ConfigManager.areRainAndThunderValid(

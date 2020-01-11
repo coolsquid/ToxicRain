@@ -2,6 +2,8 @@ package coolsquid.toxicrain.config;
 
 import java.awt.Color;
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Preconditions;
@@ -11,6 +13,8 @@ import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
@@ -39,6 +43,9 @@ public class ConfigManager {
 
 	public static boolean isWhitelist;
 	public static IntSet blacklist;
+
+	public static boolean isBiomeWhitelist;
+	public static Set<ResourceLocation> biomeBlacklist;
 
 	public static boolean enableCommand;
 
@@ -128,14 +135,27 @@ public class ConfigManager {
 		particles =
 				config.getBoolean("particles", "effect", true, "Whether the effect should come with particles or not.");
 
-		isWhitelist = config.getBoolean("dimensionWhitelist", "blacklist", false,
-				"If true, 'dimensionList' operates as a whitelist instead of a blacklist.");
-		int[] blacklistArray = config.get("blacklist", "dimensionList", new int[0],
-				"A list of dimensions that should not have poisonous rain. Can be used as a whitelist if 'dimensionWhitelist' is true.")
-				.getIntList();
-		blacklist = new IntOpenHashSet(blacklistArray.length);
-		for (int i : blacklistArray) {
-			blacklist.add(i);
+		{
+			isWhitelist = config.getBoolean("dimensionWhitelist", "blacklist", false,
+					"If true, 'dimensionList' operates as a whitelist instead of a blacklist.");
+			int[] blacklistArray = config.get("blacklist", "dimensionList", new int[0],
+					"A list of dimensions that should not have poisonous rain. Can be used as a whitelist if 'dimensionWhitelist' is true.")
+					.getIntList();
+			blacklist = new IntOpenHashSet(blacklistArray.length);
+			for (int i : blacklistArray) {
+				blacklist.add(i);
+			}
+		}
+		{
+			isBiomeWhitelist = config.getBoolean("biomeWhitelist", "blacklist", false,
+					"If true, 'biomeList' operates as a whitelist instead of a blacklist.");
+			String[] blacklistArray = config.get("blacklist", "biomeList", new String[0],
+					"A list of biomes that should not have poisonous rain. Can be used as a whitelist if 'dimensionWhitelist' is true.")
+					.getStringList();
+			biomeBlacklist = new HashSet<>(blacklistArray.length);
+			for (String i : blacklistArray) {
+				biomeBlacklist.add(new ResourceLocation(i));
+			}
 		}
 
 		enableCommand =
@@ -168,6 +188,14 @@ public class ConfigManager {
 			return ConfigManager.blacklist.contains(dim);
 		} else {
 			return !ConfigManager.blacklist.contains(dim);
+		}
+	}
+
+	public static boolean isPoisonousBiome(Biome biome) {
+		if (ConfigManager.isBiomeWhitelist) {
+			return ConfigManager.biomeBlacklist.contains(biome.getRegistryName());
+		} else {
+			return !ConfigManager.biomeBlacklist.contains(biome.getRegistryName());
 		}
 	}
 
