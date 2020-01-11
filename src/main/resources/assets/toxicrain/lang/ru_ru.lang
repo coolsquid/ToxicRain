@@ -1,0 +1,17 @@
+potion.antidote=Противоядие
+potion.effect.antidote_type=Противоядие
+potion.effect.long_antidote_type=Противоядие
+splash_potion.effect.antidote_type=Взрывное противоядие
+splash_potion.effect.long_antidote_type=Взрывное противоядие
+lingering_potion.effect.antidote_type=Затяжное противоядие
+lingering_potion.effect.long_antidote_type=Затяжное противоядие
+effect.antidote=Противоядие
+toxicrain.command.usage=Доступные подкоманды: enable [игрок], disable [игрок], delay [игрок] [тиков]
+toxicrain.command.delay.success=Дождь больше не будет токсичным для %s пока не прошло %s тиков.
+toxicrain.command.enable.success=Дождь теперь будет токсичен для %s.
+toxicrain.command.disable.success=Дождь больше не будет токсичным для %s.
+toxicrain.command.error.unknownsubcommand=Неизвестная подкоманда: %s
+toxicrain.command.error.sendernotplayer=Отправитель команды (%s) не является игроком. Попробуйте указать имя игрока в качестве последнего аргумента.
+toxicrain.command.error.wrongnumberofarguments=Неправильное количество аргументов: %s
+toxicrain.command.error.baddelay=%s не является допустимой задержкой. Задержка должна быть либо -1, 0 или положительным целым числом.
+toxicrain.alert.delay=Дождь станет токсичным через %s секунд
